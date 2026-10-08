@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+/*
+ * Dark mode is driven by a class, not `prefers-color-scheme`, because
+ * next-themes lets a visitor override the system preference. The `:where()`
+ * wrapper keeps the variant at zero specificity so it never wins a fight it
+ * shouldn't.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. PRIMITIVES
+   One hue drives the entire palette. It is lifted from the header colour of
+   Utku's CV (#385987 → oklch hue 256.9) so the PDF and the site read as the
+   same identity. Change this single number and the whole site re-themes.
+   Colours are authored in OKLCH: it is perceptually uniform, so "lightness 0.5"
+   looks equally light at every hue — which is what makes the dark palette
+   derivable rather than hand-tuned.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --brand-hue: 256.9;
+  --radius: 0.75rem;
+  --header-height: 4rem;
+
+  /*
+   * Two measures, not one. Prose gets a narrow column because 75 characters is
+   * where reading comprehension stops improving; grids and imagery get the full
+   * container. Mixing the two is what gives an editorial layout its rhythm.
+   */
+  --measure-prose: 41rem;
+
+  /* Bento geometry, in one place so the grid stays self-consistent. */
+  --bento-gap: 1.25rem;
+  --bento-corner-size: 0.75rem;
+}
+
+/* ── Light theme ─────────────────────────────────────────────────────────── */
+:root {
+  --background: oklch(0.992 0.002 var(--brand-hue));
+  --foreground: oklch(0.185 0.01 var(--brand-hue));
+
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+
+  /* 6.40:1 on background, 6.57:1 against its own foreground — AA either way. */
+  --primary: oklch(0.5 0.14 var(--brand-hue));
+  --primary-foreground: oklch(0.992 0.002 var(--brand-hue));
+
+  --secondary: oklch(0.958 0.004 var(--brand-hue));
+  --secondary-foreground: oklch(0.28 0.012 var(--brand-hue));
+
+  --muted: oklch(0.968 0.003 var(--brand-hue));
+  --muted-foreground: oklch(0.505 0.012 var(--brand-hue)); /* 5.72:1 — AA body */
+
+  --accent: oklch(0.958 0.004 var(--brand-hue));
+  --accent-foreground: oklch(0.28 0.012 var(--brand-hue));
+
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.99 0.002 var(--brand-hue));
+
+  /* `border` is decorative (dividers, cards); `input` is a control boundary and
+     therefore has to clear WCAG 1.4.11's 3:1. They are deliberately different. */
+  --border: oklch(0.918 0.004 var(--brand-hue));
+  --input: oklch(0.62 0.01 var(--brand-hue));
+  --ring: oklch(0.5 0.14 var(--brand-hue));
+}
+
+/* ── Dark theme ──────────────────────────────────────────────────────────── */
+.dark {
+  --background: oklch(0.145 0.006 var(--brand-hue));
+  --foreground: oklch(0.955 0.004 var(--brand-hue));
+
+  --card: oklch(0.195 0.006 var(--brand-hue));
+  --card-foreground: var(--foreground);
+
+  --popover: oklch(0.195 0.006 var(--brand-hue));
+  --popover-foreground: var(--foreground);
+
+  /* Inverted on purpose: a light-blue surface in a dark UI needs dark text
+     (7.95:1), not white (2.32:1). This is the mistake most dark modes make. */
+  --primary: oklch(0.76 0.145 var(--brand-hue));
+  --primary-foreground: oklch(0.185 0.01 var(--brand-hue));
+
+  --secondary: oklch(0.238 0.007 var(--brand-hue));
+  --secondary-foreground: oklch(0.925 0.005 var(--brand-hue));
+
+  --muted: oklch(0.228 0.006 var(--brand-hue));
+  --muted-foreground: oklch(0.68 0.012 var(--brand-hue)); /* 6.90:1 — AA body */
+
+  --accent: oklch(0.238 0.007 var(--brand-hue));
+  --accent-foreground: oklch(0.925 0.005 var(--brand-hue));
+
+  --destructive: oklch(0.62 0.19 25);
+  --destructive-foreground: oklch(0.165 0.012 var(--brand-hue));
+
+  --border: oklch(0.272 0.007 var(--brand-hue));
+  --input: oklch(0.49 0.01 var(--brand-hue));
+  --ring: oklch(0.76 0.145 var(--brand-hue));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. THEME MAPPING
+   `inline` makes each utility reference the custom property itself, so a
+   `.dark` override is picked up at runtime with no duplicated class output.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 12px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", monospace;
+
+  /*
+   * Fluid, and deliberately restrained. The earlier scale topped out at 76px,
+   * which reads as a landing page. Editorial portfolios hold the display size
+   * near 52px and let whitespace and rhythm carry the weight instead — the
+   * reference keeps its h1 at 36px against a 658px text column.
+   */
+  --text-display: clamp(2.125rem, 1.4rem + 2.6vw, 3.25rem);
+  --text-display--line-height: 1.06;
+  --text-display--letter-spacing: -0.028em;
+
+  --text-headline: clamp(1.5rem, 1.2rem + 1.1vw, 2rem);
+  --text-headline--line-height: 1.15;
+  --text-headline--letter-spacing: -0.022em;
+
+  /* Numerals in a bento stat cell: large, very tight, optically aligned. */
+  --text-stat: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.05em;
+
+  /* Shared easing so every animation in the app moves the same way. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Enter/exit pairs for Radix `data-[state]` transitions. Written here rather
+     than pulled in from `tailwindcss-animate`: four keyframes do not justify a
+     dependency, and these inherit our own easing tokens. */
+  --animate-fade-in: fade-in 200ms var(--ease-out-quart) both;
+  --animate-fade-out: fade-out 150ms var(--ease-out-quart) both;
+  --animate-slide-in-right: slide-in-right 320ms var(--ease-out-expo) both;
+  --animate-slide-out-right: slide-out-right 200ms var(--ease-out-quart) both;
+
+  /* Hero entrance. Deliberately a CSS animation and not Framer Motion: CSS runs
+     at first paint, while a JS animation cannot start until React has hydrated.
+     Since the <h1> is the LCP element, that difference is measurable. */
+  --animate-fade-up: fade-up 550ms var(--ease-out-expo) both;
+  --animate-pulse-dot: pulse-dot 2.4s var(--ease-out-quart) infinite;
+  --animate-corner-draw: corner-draw 420ms var(--ease-out-expo) both;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes slide-out-right {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes corner-draw {
+    from { opacity: 0; transform: scale(0.4); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.82); }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchored sections must clear the sticky header. */
+    scroll-padding-top: calc(var(--header-height) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Tabular numerals + real ligatures — cheap typographic polish. */
+    font-feature-settings: "cv11", "ss01";
+    font-variation-settings: "opsz" 32;
+  }
+
+  /* One visible, consistent focus ring. Never remove it — only restyle it. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 22%, transparent);
+    color: var(--foreground);
+  }
+
+  /* Respect the OS accessibility setting — this is not optional. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Long paragraphs read better with a measure cap than with a hard max-width. */
+  .text-pretty-balance {
+    text-wrap: pretty;
+  }
+}

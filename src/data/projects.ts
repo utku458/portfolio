@@ -1,0 +1,381 @@
+import type { Project } from "@/types";
+
+/**
+ * Every entry answers three questions in order: what was broken, what I built,
+ * and what changed. Technology lists come last on purpose — they're the least
+ * interesting thing about a project.
+ */
+const projectsData = [
+  {
+    slug: "fitapp",
+    title: "FitApp",
+    tagline: "A cross-platform health tracker on a single shared backend.",
+    problem:
+      "Fitness tracking data is only useful when it follows the person, not the device. Building the same feature set three times — once per platform — would have meant three sources of truth and three sets of bugs.",
+    solution:
+      "I designed one C# .NET API over MySQL as the single source of truth, then built thin native clients on top of it: SwiftUI on iOS, Kotlin on Android and React on the web. Auth, validation and business rules live in the API; the clients only present state and collect input.",
+    impact:
+      "Adding a feature means one API change and three presentation layers, instead of three parallel implementations that drift apart.",
+    role: "Solo developer — API design, data model, all three clients and deployment.",
+    domain: "full-stack",
+    status: "in-development",
+    featured: true,
+    period: { start: "2025-06", end: "2025-09" },
+    stack: [
+      { name: "C#", kind: "language" },
+      { name: ".NET", kind: "framework" },
+      { name: "MySQL", kind: "database" },
+      { name: "Swift", kind: "language" },
+      { name: "SwiftUI", kind: "framework" },
+      { name: "Kotlin", kind: "language" },
+      { name: "React", kind: "framework" },
+      { name: "JWT", kind: "tooling" },
+    ],
+    architecture: [
+      {
+        name: "Clients",
+        tech: ["SwiftUI (iOS)", "Kotlin (Android)", "React (Web)"],
+        responsibility:
+          "Render state and capture input. No business rules, so no platform can disagree with another.",
+      },
+      {
+        name: "API",
+        tech: ["C# .NET", "JWT"],
+        responsibility:
+          "Authentication, validation, calorie and activity calculations — the one place a rule is written down.",
+      },
+      {
+        name: "Persistence",
+        tech: ["MySQL"],
+        responsibility:
+          "Relational schema for users, meals, activity logs and daily targets.",
+      },
+    ],
+    decisions: [
+      {
+        title: "Business logic in the API, never in the client",
+        rationale:
+          "A calorie formula duplicated across Swift, Kotlin and JavaScript is a formula that will eventually give three different answers. Keeping it server-side made the clients replaceable.",
+      },
+      {
+        title: "Stateless JWT auth",
+        rationale:
+          "Three clients with different session lifecycles meant server-side sessions would have become the bottleneck. Token-based auth let each platform manage refresh in the way its own SDK expects.",
+      },
+      {
+        title: "Native charts instead of a shared web view",
+        rationale:
+          "Swift Charts renders weekly and monthly analysis at 60fps with no bridge. The cost is per-platform chart code; the benefit is an app that feels native where it matters most.",
+      },
+    ],
+    links: {
+      // No public repository or build yet. `ProjectLinkButtons` renders nothing
+      // rather than a dead "Demo" button — see the note in that component.
+    },
+    cover: {
+      // The only cover still illustrated: there is no public build of FitApp to
+      // photograph. Replace with a screenshot when there is one.
+      src: "/images/projects/fitapp.svg",
+      alt: "Illustration of the FitApp iOS, Android and web clients sharing one .NET API.",
+      width: 1200,
+      height: 750,
+    },
+  },
+  {
+    slug: "revio",
+    title: "Revio",
+    tagline: "Customer feedback from a tap on the counter — no app, no sign-up.",
+    problem:
+      "A café or a hairdresser finds out a visit went badly when the one-star review is already public. Asking at the counter rarely works either: the honest answer is the one people will not give to your face, and every alternative — find the listing, sign in, write something — loses almost everyone before the first tap.",
+    solution:
+      "A platform where each business gets NFC cards for its counter and tables. The customer holds a phone to the card, rates the visit from one to five in a few seconds and can leave a note; nothing is installed and no account is created. The owner watches scores, notes and their Google Business Profile reviews on one dashboard, broken down by table, till or staff member.",
+    impact:
+      "An unhappy customer reaches the owner before they reach Google — and if they left contact details, the business can answer them.",
+    role: "Solo developer — product design, frontend, dashboard and deployment.",
+    domain: "saas",
+    status: "live",
+    featured: true,
+    // Approximate: the month the first cards went out.
+    period: { start: "2025-01", end: null },
+    stack: [
+      { name: "React", kind: "framework" },
+      { name: "TypeScript", kind: "language" },
+      { name: "NFC / NDEF", kind: "platform" },
+      { name: "Google Business Profile API", kind: "platform" },
+      { name: "Vercel", kind: "platform" },
+    ],
+    architecture: [
+      {
+        name: "Physical layer",
+        tech: ["NFC tags", "QR fallback"],
+        responsibility:
+          "Each card encodes a URL carrying its own business and placement, so a score arrives already knowing which table it came from.",
+      },
+      {
+        name: "Rating page",
+        tech: ["React", "TypeScript"],
+        responsibility:
+          "The part a customer sees: one screen, five taps' worth of decisions, no account. It has to open on mobile data while someone is still standing there.",
+      },
+      {
+        name: "Dashboard",
+        tech: ["React", "Charts"],
+        responsibility:
+          "Score distribution, busy hours and recurring complaints, split by table, till and staff member.",
+      },
+      {
+        name: "Google integration",
+        tech: ["Google Business Profile"],
+        responsibility:
+          "Read-only. Pulls in new public reviews and flags the low-scoring ones beside the business's own feedback.",
+      },
+    ],
+    decisions: [
+      {
+        title: "No app install, ever",
+        rationale:
+          "The customer is standing at a counter with their coat on. Any step that involves an app store is a step the product does not survive.",
+      },
+      {
+        title: "Read-only access to Google, granted by the business",
+        rationale:
+          "Connecting asks the owner to add a support address as a manager on their own profile — no API key, no password handed over, and they can revoke it from Google's own settings. Revio never edits a profile or replies on anyone's behalf, because a tool that can post as you is a tool you have to trust rather than try.",
+      },
+      {
+        title: "QR alongside NFC, not instead of it",
+        rationale:
+          "NFC coverage is uneven across older Android devices and locked-down iPhones. The QR fallback costs one extra field in the data model and removes an entire class of support ticket.",
+      },
+      {
+        title: "No raw IP addresses, contact details optional",
+        rationale:
+          "The platform stores a visit, not a visitor. Feedback is worth collecting only if people are willing to give it, and the quickest way to lose that is to look like you are building a profile of whoever walked in.",
+      },
+    ],
+    links: {
+      demo: "https://www.revioapp.com.tr/",
+      // No `github`: the repository is private.
+    },
+    cover: {
+      src: "/images/projects/revio.jpg",
+      alt: "The Revio landing page: 'Find out what your customer thinks before they leave the table'.",
+      width: 800,
+      height: 503,
+    },
+    gallery: [
+      {
+        src: "/images/projects/revio-steps.jpg",
+        alt: "Three steps: the customer taps the card, rates the visit, the owner watches the panel.",
+        width: 800,
+        height: 500,
+        caption: "Three steps, no setup — the whole product in one screen.",
+      },
+      {
+        src: "/images/projects/revio-google.jpg",
+        alt: "The Google Business Profile section explaining read-only access and revocable permission.",
+        width: 800,
+        height: 500,
+        caption: "Google reviews land in the same panel — read-only, and revocable from Google's own settings.",
+      },
+    ],
+  },
+  {
+    slug: "armenu",
+    title: "ArMenu",
+    tagline: "Multi-tenant QR menus with in-browser AR — and no app to install.",
+    problem:
+      "A printed menu cannot show a guest what a dish looks like, cannot be read in their language, and cannot be changed without a reprint. Every digital answer to that asks the guest to install something, which at a restaurant table is where the idea dies.",
+    solution:
+      "A multi-tenant B2B SaaS. A guest scans the QR code on the table, reads the menu in their own language, and places a dish on the table in augmented reality through model-viewer — in the browser they already have open. Behind it: a .NET 10 API over PostgreSQL, and a separate Node service that turns an uploaded 3D model into optimised GLB, USDZ and poster images.",
+    impact:
+      "Restaurants change their own menus; guests see a dish before they order it. Neither side installs anything.",
+    role:
+      "Solo developer — API, both React apps, the 3D asset pipeline, delivery and observability.",
+    domain: "saas",
+    status: "live",
+    featured: true,
+    // Matches the repository: first commit 2026-09.
+    period: { start: "2026-09", end: null },
+    stack: [
+      { name: "C#", kind: "language" },
+      { name: "TypeScript", kind: "language" },
+      { name: ".NET 10", kind: "framework" },
+      { name: "ASP.NET Core", kind: "framework" },
+      { name: "EF Core", kind: "framework" },
+      { name: "React 19", kind: "framework" },
+      { name: "Tailwind CSS", kind: "framework" },
+      { name: "PostgreSQL", kind: "database" },
+      { name: "S3 storage", kind: "platform" },
+      { name: "WebAR", kind: "platform" },
+      { name: "Docker", kind: "tooling" },
+      { name: "OpenTelemetry", kind: "tooling" },
+    ],
+    architecture: [
+      {
+        name: "Guest & dashboard apps",
+        tech: ["React 19", "TanStack Router + Query", "Vite", "React Aria"],
+        responsibility:
+          "Two static apps on a CDN. The guest app has to open instantly on mobile data; the dashboard is where owners edit their own menus.",
+      },
+      {
+        name: "API",
+        tech: [".NET 10", "Minimal APIs", "CQRS", "JWT per tenant"],
+        responsibility:
+          "Every rule in one place, behind a committed OpenAPI contract that generates the clients' TypeScript types.",
+      },
+      {
+        name: "Persistence",
+        tech: ["PostgreSQL 18", "EF Core 10", "Row-level security"],
+        responsibility:
+          "Tenant isolation enforced by the database itself, not by remembering to filter.",
+      },
+      {
+        name: "Asset pipeline",
+        tech: ["Node.js", "glTF Transform", "meshoptimizer", "headless Chrome"],
+        responsibility:
+          "Turns an uploaded model into Meshopt + WebP GLB, a USDZ for iOS Quick Look, and poster images.",
+      },
+    ],
+    decisions: [
+      {
+        title: "Row-level security in the database, not in the query layer",
+        rationale:
+          "A tenant filter that lives in application code is one forgotten WHERE clause away from showing one restaurant another's menu. Pushing isolation into Postgres makes the leak impossible rather than unlikely.",
+      },
+      {
+        title: "Clean Architecture enforced by a test, not by discipline",
+        rationale:
+          "Architecture tests fail the build if a source dependency points outward. A layering rule that is only written in a README is a layering rule that erodes.",
+      },
+      {
+        title: "WebAR instead of a native app",
+        rationale:
+          "A diner standing at a table will not install an app to look at a menu. model-viewer loads on demand, so the guests who never open AR never pay for it.",
+      },
+      {
+        title: "A separate service for 3D assets",
+        rationale:
+          "Mesh optimisation is slow and CPU-bound. Keeping it out of the API means one large upload can never make a menu request wait behind it.",
+      },
+    ],
+    // Measured, not estimated: production build, Lighthouse 13 mobile profile,
+    // median of three runs. Numbers belong here only when they came from a run.
+    metrics: [
+      { label: "Lighthouse (perf / a11y / BP / SEO)", value: "98 / 100 / 100 / 100" },
+      { label: "Total blocking time · layout shift", value: "0 ms · 0" },
+      { label: "Startup JavaScript (gzip)", value: "117 KiB" },
+      { label: "3D stack, loaded on demand (gzip)", value: "291 KiB" },
+    ],
+    links: {
+      github: "https://github.com/utku458/ar-menu",
+      demo: "https://armenu-guest.46.225.37.55.sslip.io/",
+    },
+    cover: {
+      src: "/images/projects/armenu.jpg",
+      alt: "The ArMenu owner dashboard beside the guest app showing a burger in 3D with an AR button.",
+      width: 800,
+      height: 500,
+    },
+    gallery: [
+      {
+        src: "/images/projects/armenu-guest-menu.jpg",
+        alt: "The guest menu on a phone: search, filters, categories and a dish carrying a 3D badge.",
+        width: 750,
+        height: 1624,
+        caption: "What the guest sees after scanning the QR code on the table.",
+      },
+      {
+        src: "/images/projects/armenu-guest-ar.jpg",
+        alt: "A dish opened on a phone, rendered in 3D, with a 'See it on your table' button.",
+        width: 750,
+        height: 1624,
+        caption:
+          "The 3D stack loads only when a dish with a model is opened — guests who never use AR never pay for it.",
+      },
+      {
+        src: "/images/projects/armenu-dashboard-qr.jpg",
+        alt: "The dashboard's QR screen with a menu link, SVG and PNG downloads and printable per-table cards.",
+        width: 800,
+        height: 500,
+        caption: "Per-table QR cards, printed from the dashboard — the table number travels with the scan.",
+      },
+    ],
+  },
+  {
+    slug: "bt-support",
+    title: "BT Support",
+    tagline: "A request-tracking Android app for in-house IT teams.",
+    problem:
+      "During my internship I watched support requests arrive by phone call, chat message and corridor conversation. Nothing was tracked, so nothing could be prioritised.",
+    solution:
+      "A native Android app where employees file a request and IT staff see a single prioritised queue, backed by Firebase for realtime updates and auth.",
+    impact:
+      "Requests became a list with a state instead of an interruption — the problem I had spent a year living inside.",
+    role: "Solo developer — Android client and data model.",
+    domain: "mobile",
+    status: "archived",
+    featured: false,
+    // Matches the repository: the project was committed in 2024-12.
+    period: { start: "2024-09", end: "2024-12" },
+    stack: [
+      { name: "Kotlin", kind: "language" },
+      { name: "Android SDK", kind: "framework" },
+      { name: "Firebase", kind: "platform" },
+    ],
+    decisions: [
+      {
+        title: "Firebase instead of a custom backend",
+        rationale:
+          "The feature that mattered was realtime queue updates for a handful of internal users. Building an API for that would have been architecture for its own sake.",
+      },
+    ],
+    links: {
+      github: "https://github.com/utku458/BT-Destek",
+    },
+    cover: {
+      src: "/images/projects/bt-support.jpg",
+      alt: "The entity-relationship diagram behind BT Support: users, requests, topics and messages.",
+      width: 800,
+      height: 500,
+    },
+    gallery: [
+      {
+        src: "/images/projects/bt-support-use-case.png",
+        alt: "Use-case diagram separating what an employee can do from what IT staff can do.",
+        width: 1873,
+        height: 812,
+        caption:
+          "The use-case diagram that set the two roles apart before any screen existed — an employee files, IT prioritises.",
+      },
+    ],
+  },
+] as const satisfies readonly Project[];
+
+/**
+ * Two exports, on purpose.
+ *
+ * `projectsData` is authored with `as const satisfies`, which validates every
+ * entry against `Project` *and* keeps the literal types — that is what makes
+ * `ProjectSlug` below exact rather than `string`.
+ *
+ * But those literal types are too narrow to consume: a project whose `links` is
+ * `{}` gets the type `{}`, so `project.links.github` would be a compile error in
+ * the card even though the field is optional on `Project`. The widened export is
+ * what components import.
+ */
+export type ProjectSlug = (typeof projectsData)[number]["slug"];
+
+export const projects: readonly Project[] = projectsData;
+
+/** Grid order is the order in this file. */
+export const featuredProjects: readonly Project[] = projects.filter(
+  (project) => project.featured,
+);
+
+export const otherProjects: readonly Project[] = projects.filter(
+  (project) => !project.featured,
+);
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((project) => project.slug === slug);
+}
