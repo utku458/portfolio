@@ -134,21 +134,30 @@ const projectsData = [
     problem:
       "A café or a hairdresser finds out a visit went badly when the one-star review is already public. Asking at the counter rarely works either: the honest answer is the one people will not give to your face, and every alternative — find the listing, sign in, write something — loses almost everyone before the first tap.",
     solution:
-      "A platform where each business gets NFC cards for its counter and tables. The customer holds a phone to the card, rates the visit from one to five in a few seconds and can leave a note; nothing is installed and no account is created. The owner watches scores, notes and their Google Business Profile reviews on one dashboard, broken down by table, till or staff member.",
+      "A multi-tenant SaaS. Each business gets NFC cards for its counter and tables; the customer holds a phone to one, rates the visit in a few seconds and can leave a note, with nothing installed and no account created. Behind the tap is a .NET 8 API in a clean architecture — CQRS through MediatR, EF Core over MySQL, Redis on the hot path and Hangfire pulling Google Business Profile reviews in overnight — and a React dashboard where scores, notes and Google reviews meet, split by table, till and staff member.",
     impact:
-      "An unhappy customer reaches the owner before they reach Google — and if they left contact details, the business can answer them.",
-    role: "Solo developer — product design, frontend, dashboard and deployment.",
+      "An unhappy customer reaches the owner before they reach Google — while they are still standing in the shop, and in time for someone to do something about it.",
+    role:
+      "Solo developer — architecture, API, background jobs, dashboard and deployment.",
     domain: "saas",
     status: "live",
     featured: true,
     // Approximate: the month the first cards went out.
     period: { start: "2025-01", end: null },
     stack: [
-      { name: "React", kind: "framework" },
+      { name: "C#", kind: "language" },
       { name: "TypeScript", kind: "language" },
+      { name: ".NET 8", kind: "framework" },
+      { name: "MediatR", kind: "framework" },
+      { name: "EF Core", kind: "framework" },
+      { name: "React", kind: "framework" },
+      { name: "Tailwind CSS", kind: "framework" },
+      { name: "MySQL", kind: "database" },
+      { name: "Redis", kind: "database" },
+      { name: "Hangfire", kind: "tooling" },
+      { name: "Docker", kind: "tooling" },
       { name: "NFC / NDEF", kind: "platform" },
       { name: "Google Business Profile API", kind: "platform" },
-      { name: "Vercel", kind: "platform" },
     ],
     architecture: [
       {
@@ -158,45 +167,55 @@ const projectsData = [
           "Each card encodes a URL carrying its own business and placement, so a score arrives already knowing which table it came from.",
       },
       {
-        name: "Rating page",
-        tech: ["React", "TypeScript"],
+        name: "Scan endpoint",
+        tech: ["ASP.NET Core", "Redis"],
         responsibility:
-          "The part a customer sees: one screen, five taps' worth of decisions, no account. It has to open on mobile data while someone is still standing there.",
+          "The hot path. Card and business are read from cache, the scan is logged out of band, and the customer is redirected — this is the one request in the system that is allowed to be slow for nobody.",
+      },
+      {
+        name: "API",
+        tech: [".NET 8", "MediatR (CQRS)", "FluentValidation", "EF Core 8"],
+        responsibility:
+          "Domain, Application, Infrastructure and Api as separate projects with dependencies pointing inward only; the domain project references no packages at all.",
+      },
+      {
+        name: "Background jobs",
+        tech: ["Hangfire", "Google Business Profile API"],
+        responsibility:
+          "Overnight review sync, queued as one job per business so a single failing account cannot block the rest, and idempotent on Google's own review id.",
       },
       {
         name: "Dashboard",
-        tech: ["React", "Charts"],
+        tech: ["React", "Vite", "TanStack Query", "Recharts"],
         responsibility:
-          "Score distribution, busy hours and recurring complaints, split by table, till and staff member.",
-      },
-      {
-        name: "Google integration",
-        tech: ["Google Business Profile"],
-        responsibility:
-          "Read-only. Pulls in new public reviews and flags the low-scoring ones beside the business's own feedback.",
+          "Score distribution, busy hours and recurring complaints, with Google's reviews beside the business's own.",
       },
     ],
     decisions: [
       {
-        title: "No app install, ever",
+        title: "The star filter is an ordering, not a gate",
         rationale:
-          "The customer is standing at a counter with their coat on. Any step that involves an app store is a step the product does not survive.",
+          "Routing only happy customers to Google is called review gating, and Google's own policy forbids selectively soliciting positive reviews — a business caught doing it can lose its reviews outright. So the rating decides which screen comes first, not which doors exist: someone who rates one star still sees the Google option, they just see the \"tell the business directly\" form before it. The legitimate way to have fewer bad reviews is to fix the visit while the customer is still in the room.",
       },
       {
-        title: "Read-only access to Google, granted by the business",
+        title: "One platform Google account, added as a manager",
         rationale:
-          "Connecting asks the owner to add a support address as a manager on their own profile — no API key, no password handed over, and they can revoke it from Google's own settings. Revio never edits a profile or replies on anyone's behalf, because a tool that can post as you is a tool you have to trust rather than try.",
+          "The first design asked each business to paste its own authorisation into the panel. Google's access tokens expire after an hour, so the nightly sync broke by the next morning; working with refresh tokens instead needs a client id and secret per business, which is not something you can ask a hairdresser to generate. Now the owner adds the platform's support address as a manager on their own profile — no token, no password, revocable from Google's settings in one click.",
       },
       {
-        title: "QR alongside NFC, not instead of it",
+        title: "Tenant isolation as a query filter, not a WHERE clause",
         rationale:
-          "NFC coverage is uneven across older Android devices and locked-down iPhones. The QR fallback costs one extra field in the data model and removes an entire class of support ticket.",
+          "Every tenant-scoped entity carries a global query filter, and the check that a location belongs to the asking tenant runs on the server rather than in the panel. Filtering in application code is one forgotten clause away from showing a café another café's reviews; hiding the option in the UI only stops the people who use the UI.",
       },
       {
-        title: "No raw IP addresses, contact details optional",
+        title: "Compute first, ask a model second",
         rationale:
-          "The platform stores a visit, not a visitor. Feedback is worth collecting only if people are willing to give it, and the quickest way to lose that is to look like you are building a profile of whoever walked in.",
+          "Review insights are calculated deterministically wherever the arithmetic is enough, and only the parts that need language go to a model — Gemini first, Claude as a fallback when Gemini fails, under a daily cap, and the feature degrades quietly when no key is configured. A summary that costs money and can hallucinate should be the exception, not the pipeline.",
       },
+    ],
+    metrics: [
+      { label: "Automated tests", value: "878 across 111 files" },
+      { label: "Packages referenced by the domain layer", value: "0" },
     ],
     links: {
       demo: "https://www.revioapp.com.tr/",
@@ -221,7 +240,8 @@ const projectsData = [
         alt: "The Google Business Profile section explaining read-only access and revocable permission.",
         width: 800,
         height: 500,
-        caption: "Google reviews land in the same panel — read-only, and revocable from Google's own settings.",
+        caption:
+          "Google reviews land in the same panel — read-only, and revocable from Google's own settings.",
       },
     ],
   },

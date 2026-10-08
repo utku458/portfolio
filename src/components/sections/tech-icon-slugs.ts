@@ -68,6 +68,8 @@ const SLUG_BY_TECH_NAME: Record<string, string> = {
   "next.js": "nextdotjs",
   opentelemetry: "opentelemetry",
   postgresql: "postgresql",
+  mediatr: "dotnet",
+  hangfire: "dotnet",
   python: "python",
   react: "react",
   "react 19": "react",
