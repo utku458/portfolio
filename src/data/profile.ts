@@ -84,10 +84,12 @@ const profileData = {
       note: "The engineering foundation: algorithms, databases and object-oriented design.",
     },
   ],
-  // `resumeUrl` deliberately unset. The PDF holds a phone number, a date of
-  // birth and a postal code; `public/` is world-readable and search engines
-  // index PDF text, so publishing it would undo the omission of `phone` above.
-  // Point this at a scrubbed copy when there is one.
+  // Published deliberately. The PDF carries a phone number and a date of
+  // birth that this page itself withholds — a decision taken knowingly, not an
+  // oversight. `robots.ts` keeps it out of search results, so it is downloadable
+  // by someone reading the site rather than findable by someone querying for a
+  // phone number.
+  resumeUrl: "/documents/utku-altinay-cv.pdf",
 } as const satisfies Profile;
 
 /** Widened for consumption — see the note in `projects.ts`. */

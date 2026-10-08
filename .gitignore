@@ -45,9 +45,3 @@ next-env.d.ts
 .vscode/
 .idea/
 .claude/
-
-# The CV carries a phone number, a date of birth and a postal code. Anything
-# under `public/` is served at a guessable URL and indexed — `robots.ts` allows
-# everything, and search engines read PDF text. Keep the file local; publish a
-# scrubbed copy deliberately if you want one.
-/public/documents/*.pdf

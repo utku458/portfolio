@@ -49,10 +49,9 @@ export interface Profile {
   readonly experience: readonly Experience[];
   readonly education: readonly Education[];
   /**
-   * Path under `public/` to the downloadable CV. Optional, and currently unset:
-   * the CV carries a phone number and a date of birth, and anything under
-   * `public/` is served at a guessable URL and indexed. Set this once a
-   * scrubbed copy exists; every consumer already renders nothing without it.
+   * Path under `public/` to the downloadable CV. Optional on purpose: every
+   * consumer renders nothing when it is unset, so withdrawing the document is
+   * a one-line change rather than a hunt through the components.
    */
   readonly resumeUrl?: string;
 }

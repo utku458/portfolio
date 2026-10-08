@@ -4,8 +4,8 @@ Personal portfolio of **Utku Altınay** — full-stack developer, İstanbul.
 Built as a demonstration of architecture and code quality, not just as a page
 with a name on it.
 
-> **Live:** not deployed yet · **Contact:** the form on the site, or
-> [altinayutku0@gmail.com](mailto:altinayutku0@gmail.com)
+> **Live:** not deployed yet · **Résumé:** [`public/documents`](public/documents) ·
+> **Contact:** the form on the site, or [altinayutku0@gmail.com](mailto:altinayutku0@gmail.com)
 
 ---
 

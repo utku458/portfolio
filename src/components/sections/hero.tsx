@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { GlanceGrid } from "@/components/sections/glance-grid";
@@ -60,14 +60,14 @@ export function Hero() {
                 <ArrowRight aria-hidden />
               </a>
             </Button>
-            {/*
-              The secondary CTA was the CV download. With the PDF withheld, the
-              next most useful thing to offer is the conversation it was meant
-              to start — not a button that downloads nothing.
-            */}
-            <Button asChild variant="outline" size="lg">
-              <a href="#contact">Get in touch</a>
-            </Button>
+            {profile.resumeUrl && (
+              <Button asChild variant="outline" size="lg">
+                <a href={profile.resumeUrl} download>
+                  <Download aria-hidden />
+                  Résumé
+                </a>
+              </Button>
+            )}
             <SocialLinks className="sm:ml-2" />
           </div>
 
