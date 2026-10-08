@@ -429,26 +429,34 @@ const projectsData = [
     },
     cover: {
       src: "/images/projects/ttrpg-companion.jpg",
-      alt: "The character-select screen showing playable characters with their stats and backstories.",
+      alt: "A character sheet and the pixel-art battle arena, side by side on two phones.",
       width: 800,
       height: 500,
     },
     gallery: [
       {
-        src: "/images/projects/ttrpg-companion-sheet.jpg",
-        alt: "A character sheet with a health bar and tabs for stats, abilities, items, conditions, story, journal and relationships.",
-        width: 800,
-        height: 500,
+        src: "/images/projects/ttrpg-companion-combat.jpg",
+        alt: "The battle arena: pixel-art sprites in a back street, with the turn order and the attack-roll panel below.",
+        width: 646,
+        height: 1400,
         caption:
-          "The character sheet every player at the table sees update in real time.",
+          "A contested attack in progress. The attacker enters their roll, the defence opens on the other player's device, and the server decides the outcome.",
       },
       {
-        src: "/images/projects/ttrpg-companion-stats.jpg",
-        alt: "A radar chart of a character's stat profile, above the day-end, events and battle-lobby actions.",
-        width: 800,
-        height: 500,
+        src: "/images/projects/ttrpg-companion-select.jpg",
+        alt: "Character selection: a pixel-art portrait with health, strength, agility, honour and money, and a backstory.",
+        width: 646,
+        height: 1400,
         caption:
-          "Stat profile, the end-of-day cycle, and the entrances to the online and solo battle arenas.",
+          "Three playable characters, each with stats and the part of the story they walked in from.",
+      },
+      {
+        src: "/images/projects/ttrpg-companion-sheet.jpg",
+        alt: "A character sheet with a health bar, a connection badge, and sections for stats, abilities, items, conditions, story, wallet and relationships.",
+        width: 646,
+        height: 1400,
+        caption:
+          "The sheet every player sees update live — the badge in the corner is the SignalR connection, not decoration.",
       },
     ],
   },
