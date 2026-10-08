@@ -9,75 +9,123 @@ const projectsData = [
   {
     slug: "fitapp",
     title: "FitApp",
-    tagline: "A cross-platform health tracker on a single shared backend.",
+    tagline: "One .NET API, three native clients, and the habits that keep someone coming back.",
     problem:
-      "Fitness tracking data is only useful when it follows the person, not the device. Building the same feature set three times — once per platform — would have meant three sources of truth and three sets of bugs.",
+      "Fitness tracking data is only useful when it follows the person, not the device — and a tracker nobody opens after the second week is not useful at all. Building the same feature set three times, once per platform, would have meant three sources of truth and three sets of bugs; building only the tracking would have meant an app with nothing to come back for.",
     solution:
-      "I designed one C# .NET API over MySQL as the single source of truth, then built thin native clients on top of it: SwiftUI on iOS, Kotlin on Android and React on the web. Auth, validation and business rules live in the API; the clients only present state and collect input.",
+      "One C# .NET 8 API over MySQL as the single source of truth, with thin clients on top: SwiftUI on iOS, Kotlin on Android and Next.js on the web. Beyond logging meals, water, steps and workouts, the server runs what makes it a habit — a Gemini-backed coach, daily and friend quests, a gold balance with a shop, a leaderboard, and chat over SignalR. Auth, validation and every rule live in the API; the clients present state and collect input.",
     impact:
-      "Adding a feature means one API change and three presentation layers, instead of three parallel implementations that drift apart.",
-    role: "Solo developer — API design, data model, all three clients and deployment.",
+      "A feature is one API change and three presentation layers, instead of three implementations that drift apart — and the reason to open it on day thirty is a server-side system rather than a notification.",
+    role:
+      "Solo developer — API design, data model, all three clients and deployment.",
     domain: "full-stack",
     status: "live",
     featured: true,
-    period: { start: "2025-06", end: "2025-09" },
+    period: { start: "2026-05", end: null },
     stack: [
       { name: "C#", kind: "language" },
-      { name: ".NET", kind: "framework" },
-      { name: "MySQL", kind: "database" },
       { name: "Swift", kind: "language" },
-      { name: "SwiftUI", kind: "framework" },
       { name: "Kotlin", kind: "language" },
-      { name: "React", kind: "framework" },
+      { name: "TypeScript", kind: "language" },
+      { name: ".NET 8", kind: "framework" },
+      { name: "SwiftUI", kind: "framework" },
+      { name: "Next.js", kind: "framework" },
+      { name: "EF Core", kind: "framework" },
+      { name: "SignalR", kind: "framework" },
+      { name: "MySQL", kind: "database" },
+      { name: "AWS", kind: "platform" },
       { name: "JWT", kind: "tooling" },
     ],
     architecture: [
       {
         name: "Clients",
-        tech: ["SwiftUI (iOS)", "Kotlin (Android)", "React (Web)"],
+        tech: ["SwiftUI (iOS)", "Kotlin (Android)", "Next.js (Web)"],
         responsibility:
-          "Render state and capture input. No business rules, so no platform can disagree with another.",
+          "Render state and capture input. No business rules, so no platform can disagree with another about a calorie, a streak or a balance.",
       },
       {
         name: "API",
-        tech: ["C# .NET", "JWT"],
+        tech: [".NET 8", "JWT", "BCrypt", "Google sign-in"],
         responsibility:
-          "Authentication, validation, calorie and activity calculations — the one place a rule is written down.",
+          "Authentication, validation and every calculation — the one place a rule is written down, behind an OpenAPI document the clients are built against.",
       },
       {
-        name: "Persistence",
-        tech: ["MySQL"],
+        name: "Engagement services",
+        tech: ["Gemini", "SignalR", "Daily & friend quests", "Gold and shop"],
         responsibility:
-          "Relational schema for users, meals, activity logs and daily targets.",
+          "The coach, the quests, the currency and the leaderboard: each its own service, because the part of a fitness app that decides whether it survives month one is not the part that adds up calories.",
+      },
+      {
+        name: "Persistence & media",
+        tech: ["EF Core 8", "MySQL on AWS RDS", "Cloudinary", "S3"],
+        responsibility:
+          "A relational schema for users, meals, workouts, quests and balances, grown through migrations rather than rewritten; images go to object storage, never into the database.",
       },
     ],
     decisions: [
       {
         title: "Business logic in the API, never in the client",
         rationale:
-          "A calorie formula duplicated across Swift, Kotlin and JavaScript is a formula that will eventually give three different answers. Keeping it server-side made the clients replaceable.",
+          "A calorie formula duplicated across Swift, Kotlin and TypeScript is a formula that will eventually give three different answers. Keeping it server-side made the clients replaceable — and made the web client possible at all without a fourth implementation.",
+      },
+      {
+        title: "The AI coach lives on the server",
+        rationale:
+          "Calling a model from three apps would mean shipping the key in three binaries and begging for an app-store release every time the prompt is wrong. The coach is one service behind the API: the key never leaves the server, and the advice can change on a Tuesday afternoon.",
+      },
+      {
+        title: "Gamification is a schema, not a feature flag",
+        rationale:
+          "Quests, gold, the shop and the leaderboard are their own tables and their own services rather than conditionals bolted onto the tracking code. Adding a quest type is a row; it is the difference between a system that grows and one that accumulates special cases.",
       },
       {
         title: "Stateless JWT auth",
         rationale:
-          "Three clients with different session lifecycles meant server-side sessions would have become the bottleneck. Token-based auth let each platform manage refresh in the way its own SDK expects.",
-      },
-      {
-        title: "Native charts instead of a shared web view",
-        rationale:
-          "Swift Charts renders weekly and monthly analysis at 60fps with no bridge. The cost is per-platform chart code; the benefit is an app that feels native where it matters most.",
+          "Three clients with different session lifecycles meant server-side sessions would have become the bottleneck. Token-based auth let each platform manage refresh the way its own SDK expects.",
       },
     ],
     links: {
       demo: "https://fitapp-fitapp-web.46.225.37.55.sslip.io/",
-      // No `github`: the repository is private.
+      // No `github`: the four repositories (iOS, Android, web, API) are private.
     },
     cover: {
       src: "/images/projects/fitapp.jpg",
-      alt: "The FitApp web client's landing screen: sign-up, and cards for meal, water, workout and statistics tracking.",
+      alt: "The FitApp dashboard shown on the web, on iOS and on Android at the same time.",
       width: 800,
       height: 500,
     },
+    gallery: [
+      {
+        src: "/images/projects/fitapp-ai-coach-ios.jpg",
+        alt: "The AI coach screen on iOS, answering a question about the day's plan.",
+        width: 750,
+        height: 1630,
+        caption:
+          "The Gemini-backed coach. It runs behind the API, so the key stays on the server and the prompt changes without an app release.",
+      },
+      {
+        src: "/images/projects/fitapp-leaderboard-android.jpg",
+        alt: "The leaderboard on Android, ranking users by their gold balance.",
+        width: 750,
+        height: 1673,
+        caption:
+          "Leaderboard, quests and a gold balance — the same services on every client, because the ranking has to agree with itself.",
+      },
+      {
+        src: "/images/projects/fitapp-workouts-web.jpg",
+        alt: "Workout programs on the web client, with exercises and progress.",
+        width: 1200,
+        height: 1272,
+        caption: "Workout programs on the web client, built from the same endpoints the phones use.",
+      },
+      {
+        src: "/images/projects/fitapp-report-web.jpg",
+        alt: "The daily report on the web client: calories, water, steps and workout totals.",
+        width: 1200,
+        height: 857,
+        caption: "The daily report — the numbers every client renders and none of them calculates.",
+      },
+    ],
   },
   {
     slug: "revio",

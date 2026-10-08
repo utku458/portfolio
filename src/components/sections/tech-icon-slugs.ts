@@ -76,6 +76,7 @@ const SLUG_BY_TECH_NAME: Record<string, string> = {
   supabase: "supabase",
   swift: "swift",
   swiftui: "swift",
+  "next.js 15": "nextdotjs",
   "tailwind css": "tailwindcss",
   typescript: "typescript",
   vercel: "vercel",
