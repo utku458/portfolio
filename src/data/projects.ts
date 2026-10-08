@@ -300,6 +300,111 @@ const projectsData = [
     ],
   },
   {
+    slug: "ttrpg-companion",
+    title: "TTRPG Companion",
+    tagline: "A real-time table for a tabletop campaign — and a server nobody has to trust.",
+    problem:
+      "Running a tabletop campaign means tracking hit points, initiative order, inventory, status effects and relationships across paper sheets and a group chat. When part of the table is remote, all of that shared state lives in one person's head — and so does every dice roll, which everyone else simply has to believe.",
+    solution:
+      "A turn-based companion for the campaign I run with friends. One Expo client — iOS, Android and, through react-native-web, a plain browser link — talks to a .NET 8 API over a SignalR hub, so every player sees the same sheets, the same initiative order and the same combat turn as it happens. The rules live on the server: around forty domain services covering dice, combat phases, traits, status effects, triggered reactions, arena modifiers and a day-and-rest cycle.",
+    impact:
+      "Friends join from a link with nothing installed, the session survives a mid-game deploy, and no one has to take anyone's word for a roll.",
+    role:
+      "Solo developer — the API, the real-time hub, the rules engine and the client.",
+    domain: "full-stack",
+    status: "live",
+    featured: true,
+    period: { start: "2026-06", end: null },
+    stack: [
+      { name: "TypeScript", kind: "language" },
+      { name: "C#", kind: "language" },
+      { name: "React Native", kind: "framework" },
+      { name: "Expo", kind: "framework" },
+      { name: ".NET 8", kind: "framework" },
+      { name: "SignalR", kind: "framework" },
+      { name: "EF Core", kind: "framework" },
+      { name: "PostgreSQL", kind: "database" },
+      { name: "SQLite", kind: "database" },
+      { name: "Railway", kind: "platform" },
+    ],
+    architecture: [
+      {
+        name: "Client",
+        tech: ["Expo", "React Native", "expo-router", "react-native-web"],
+        responsibility:
+          "One codebase for iOS, Android and the browser. The web build is the one that gets used: a link in the group chat beats asking five people to install something.",
+      },
+      {
+        name: "Real-time hub",
+        tech: ["SignalR", ".NET 8"],
+        responsibility:
+          "Every action at the table — joining, rolling, attacking, ending a turn — is a hub method broadcast to the room. Rejoining re-reads the current state instead of replaying what was missed.",
+      },
+      {
+        name: "Rules engine",
+        tech: ["C#", "Domain services"],
+        responsibility:
+          "Dice, combat phases, traits, status effects, triggered reactions and arena modifiers. Each rule is one service, so a new mechanic is a new file rather than another branch in an existing one.",
+      },
+      {
+        name: "Persistence",
+        tech: ["EF Core 8", "PostgreSQL", "SQLite"],
+        responsibility:
+          "Rooms, characters, initiative and the live combat turn are rows, not memory. SQLite locally and PostgreSQL in deployment, behind the same context.",
+      },
+    ],
+    decisions: [
+      {
+        title: "The server rolls the dice",
+        rationale:
+          "A client that generates its own numbers is a client that can be persuaded to generate better ones. The raw d20 is rolled server-side, and the modifiers from stats, equipment and relationships are applied there too — so the result that reaches the table is one nobody could have edited on the way.",
+      },
+      {
+        title: "But a real die still counts",
+        rationale:
+          "People at a physical table are not going to put their dice away, and an app that tells them to is an app they close. Alongside the server roll there is a path for submitting a number you rolled yourself; the same rules apply to it. The anti-cheat protects the remote players without disciplining the ones in the room.",
+      },
+      {
+        title: "Connections in memory, the game in the database",
+        rationale:
+          "SignalR connections are disposable — a phone sleeps, a tunnel drops, a deploy restarts the process. Treating them as the source of truth would mean a lost connection is a lost session. The room state is persisted instead, so reconnecting is a read rather than a recovery.",
+      },
+      {
+        title: "What a game master may do is a server rule",
+        rationale:
+          "Spectator, player and director join through separate hub methods with their own access level, instead of the client hiding buttons it hopes nobody finds. Authority that only exists in the UI is authority anyone can grant themselves with developer tools.",
+      },
+    ],
+    links: {
+      demo: "https://honest-fulfillment-dnd-fronend.46.225.37.55.sslip.io/",
+      // No `github`: the repository is private.
+    },
+    cover: {
+      src: "/images/projects/ttrpg-companion.jpg",
+      alt: "The character-select screen showing playable characters with their stats and backstories.",
+      width: 800,
+      height: 500,
+    },
+    gallery: [
+      {
+        src: "/images/projects/ttrpg-companion-sheet.jpg",
+        alt: "A character sheet with a health bar and tabs for stats, abilities, items, conditions, story, journal and relationships.",
+        width: 800,
+        height: 500,
+        caption:
+          "The character sheet every player at the table sees update in real time.",
+      },
+      {
+        src: "/images/projects/ttrpg-companion-stats.jpg",
+        alt: "A radar chart of a character's stat profile, above the day-end, events and battle-lobby actions.",
+        width: 800,
+        height: 500,
+        caption:
+          "Stat profile, the end-of-day cycle, and the entrances to the online and solo battle arenas.",
+      },
+    ],
+  },
+  {
     slug: "bt-support",
     title: "BT Support",
     tagline: "A request-tracking Android app for in-house IT teams.",

@@ -51,6 +51,7 @@ export function hasTechIcon(slug: string | undefined): slug is string {
  */
 const SLUG_BY_TECH_NAME: Record<string, string> = {
   ".net": "dotnet",
+  ".net 8": "dotnet",
   ".net 10": "dotnet",
   "asp.net core": "dotnet",
   "ef core": "dotnet",
@@ -70,6 +71,7 @@ const SLUG_BY_TECH_NAME: Record<string, string> = {
   python: "python",
   react: "react",
   "react 19": "react",
+  "react native": "react",
   "s3 storage": "amazons3",
   supabase: "supabase",
   swift: "swift",
