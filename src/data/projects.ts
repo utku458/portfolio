@@ -18,7 +18,7 @@ const projectsData = [
       "Adding a feature means one API change and three presentation layers, instead of three parallel implementations that drift apart.",
     role: "Solo developer — API design, data model, all three clients and deployment.",
     domain: "full-stack",
-    status: "in-development",
+    status: "live",
     featured: true,
     period: { start: "2025-06", end: "2025-09" },
     stack: [
@@ -69,16 +69,14 @@ const projectsData = [
       },
     ],
     links: {
-      // No public repository or build yet. `ProjectLinkButtons` renders nothing
-      // rather than a dead "Demo" button — see the note in that component.
+      demo: "https://fitapp-fitapp-web.46.225.37.55.sslip.io/",
+      // No `github`: the repository is private.
     },
     cover: {
-      // The only cover still illustrated: there is no public build of FitApp to
-      // photograph. Replace with a screenshot when there is one.
-      src: "/images/projects/fitapp.svg",
-      alt: "Illustration of the FitApp iOS, Android and web clients sharing one .NET API.",
-      width: 1200,
-      height: 750,
+      src: "/images/projects/fitapp.jpg",
+      alt: "The FitApp web client's landing screen: sign-up, and cards for meal, water, workout and statistics tracking.",
+      width: 800,
+      height: 500,
     },
   },
   {
