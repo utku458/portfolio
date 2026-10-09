@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { profile } from "@/data";
+import { profileFacts } from "@/data";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
@@ -24,7 +24,7 @@ export default function Icon() {
           borderRadius: 7,
         }}
       >
-        {profile.initials}
+        {profileFacts.initials}
       </div>
     ),
     { ...size },

@@ -1,17 +1,18 @@
+import { getSkillCopy } from "@/i18n/content/skills";
+import type { Locale } from "@/i18n/config";
 import { SKILL_CATEGORIES, type Skill, type SkillGroup } from "@/types";
 
 /**
  * Flat source of truth. Grouping is derived below so a skill can never end up
  * in two lists, or in none.
  */
-const skillsData = [
+const skillFacts = [
   // ── Backend ──────────────────────────────────────────────────────────────
   {
     id: "csharp-dotnet",
     name: "C# / .NET",
     category: "backend",
     level: "proficient",
-    context: "REST API serving three client platforms with JWT-based auth.",
     iconSlug: "dotnet",
   },
   {
@@ -19,7 +20,6 @@ const skillsData = [
     name: "MySQL",
     category: "backend",
     level: "proficient",
-    context: "Relational schema design and query tuning behind the FitApp API.",
     iconSlug: "mysql",
   },
   {
@@ -27,7 +27,6 @@ const skillsData = [
     name: "PostgreSQL",
     category: "backend",
     level: "proficient",
-    context: "Row-level security and EF Core migrations behind the ArMenu API.",
     iconSlug: "postgresql",
   },
   {
@@ -35,7 +34,6 @@ const skillsData = [
     name: "Python",
     category: "backend",
     level: "familiar",
-    context: "Scripting, data wrangling and glue code between services.",
     iconSlug: "python",
   },
   {
@@ -43,7 +41,6 @@ const skillsData = [
     name: "REST API Design",
     category: "backend",
     level: "proficient",
-    context: "One contract consumed by iOS, Android and web without branching.",
   },
 
   // ── Frontend ─────────────────────────────────────────────────────────────
@@ -52,7 +49,6 @@ const skillsData = [
     name: "TypeScript",
     category: "frontend",
     level: "proficient",
-    context: "Strict mode, no `any` — the type layer is the documentation.",
     iconSlug: "typescript",
   },
   {
@@ -60,7 +56,6 @@ const skillsData = [
     name: "React",
     category: "frontend",
     level: "proficient",
-    context: "Component architecture for the FitApp web client and the NFC SaaS.",
     iconSlug: "react",
   },
   {
@@ -68,7 +63,6 @@ const skillsData = [
     name: "Next.js",
     category: "frontend",
     level: "proficient",
-    context: "App Router, server components and static rendering on Vercel.",
     iconSlug: "nextdotjs",
   },
   {
@@ -76,7 +70,6 @@ const skillsData = [
     name: "JavaScript",
     category: "frontend",
     level: "core",
-    context: "The language underneath everything else on this list.",
     iconSlug: "javascript",
   },
   {
@@ -84,7 +77,6 @@ const skillsData = [
     name: "Tailwind CSS",
     category: "frontend",
     level: "proficient",
-    context: "Design tokens as CSS variables, dark mode without a second stylesheet.",
     iconSlug: "tailwindcss",
   },
 
@@ -94,7 +86,6 @@ const skillsData = [
     name: "Swift & SwiftUI",
     category: "mobile",
     level: "core",
-    context: "FitApp iOS client — MVVM, Swift Charts, async networking.",
     iconSlug: "swift",
   },
   {
@@ -102,7 +93,6 @@ const skillsData = [
     name: "Kotlin & Android",
     category: "mobile",
     level: "core",
-    context: "Native Android clients and a Firebase-backed request tracker.",
     iconSlug: "kotlin",
   },
 
@@ -112,7 +102,6 @@ const skillsData = [
     name: "Git",
     category: "tooling",
     level: "core",
-    context: "Branch-per-feature, readable history, reviewable diffs.",
     iconSlug: "git",
   },
   {
@@ -120,7 +109,6 @@ const skillsData = [
     name: "Docker",
     category: "tooling",
     level: "proficient",
-    context: "Chiseled .NET images and a reproducible local stack for ArMenu.",
     iconSlug: "docker",
   },
   {
@@ -130,7 +118,6 @@ const skillsData = [
     level: "proficient",
     // Not behind any project on this page — it is tooling used in client work
     // rather than in something shipped here. Give it a project or drop it.
-    context: "Workflow automation for small-business operations.",
     iconSlug: "n8n",
   },
   {
@@ -138,7 +125,6 @@ const skillsData = [
     name: "Supabase",
     category: "tooling",
     level: "familiar",
-    context: "Postgres, auth and storage when a project doesn't warrant its own API.",
     iconSlug: "supabase",
   },
   {
@@ -146,7 +132,6 @@ const skillsData = [
     name: "Firebase",
     category: "tooling",
     level: "proficient",
-    context: "Realtime data and auth for the BT Support Android client.",
     iconSlug: "firebase",
   },
   {
@@ -154,37 +139,52 @@ const skillsData = [
     name: "Vercel",
     category: "tooling",
     level: "proficient",
-    context: "Preview deployments and edge delivery for every web project here.",
     iconSlug: "vercel",
   },
-] as const satisfies readonly Skill[];
+] as const;
 
 /** Widened for consumption — see the note in `projects.ts`. */
-export const skills: readonly Skill[] = skillsData;
+/** Stable ids, so the Turkish file is matched by key rather than by order. */
+export type SkillId = (typeof skillFacts)[number]["id"];
 
-/** Copy for each column header. Typed so a new category can't be forgotten. */
-const GROUP_META: Record<Skill["category"], Pick<SkillGroup, "label" | "description">> = {
-  backend: {
-    label: "Backend",
-    description: "The contract every client depends on.",
+/**
+ * Column headers. Keyed by category so a new category cannot be added without
+ * a label in both languages.
+ */
+const GROUP_META: Record<Locale, Record<Skill["category"], { label: string; description: string }>> = {
+  en: {
+    backend: { label: "Backend", description: "The contract every client depends on." },
+    frontend: { label: "Frontend", description: "Typed, accessible interfaces that stay fast." },
+    mobile: { label: "Mobile", description: "Native on both platforms, not a wrapper." },
+    tooling: {
+      label: "Tooling & Automation",
+      description: "Shipping, and removing the work nobody wants to repeat.",
+    },
   },
-  frontend: {
-    label: "Frontend",
-    description: "Typed, accessible interfaces that stay fast.",
-  },
-  mobile: {
-    label: "Mobile",
-    description: "Native on both platforms, not a wrapper.",
-  },
-  tooling: {
-    label: "Tooling & Automation",
-    description: "Shipping, and removing the work nobody wants to repeat.",
+  tr: {
+    backend: { label: "Backend", description: "Her istemcinin dayandığı sözleşme." },
+    frontend: { label: "Frontend", description: "Tipli, erişilebilir ve hızlı kalan arayüzler." },
+    mobile: { label: "Mobil", description: "Her iki platformda da native; sarmalayıcı değil." },
+    tooling: {
+      label: "Araçlar ve Otomasyon",
+      description: "Yayına almak ve kimsenin tekrarlamak istemediği işi ortadan kaldırmak.",
+    },
   },
 };
 
+/** Facts plus the locale's one-line context, in the shape components expect. */
+export function getSkills(locale: Locale): readonly Skill[] {
+  const copy = getSkillCopy(locale);
+  return skillFacts.map((skill) => ({ ...skill, context: copy[skill.id] }));
+}
+
 /** Derived view for the Skills section — grouping stays in one place. */
-export const skillGroups: readonly SkillGroup[] = SKILL_CATEGORIES.map((category) => ({
-  category,
-  ...GROUP_META[category],
-  skills: skills.filter((skill) => skill.category === category),
-}));
+export function getSkillGroups(locale: Locale): readonly SkillGroup[] {
+  const all = getSkills(locale);
+  const meta = GROUP_META[locale];
+  return SKILL_CATEGORIES.map((category) => ({
+    category,
+    ...meta[category],
+    skills: all.filter((skill) => skill.category === category),
+  }));
+}

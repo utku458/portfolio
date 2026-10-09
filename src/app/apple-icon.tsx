@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { profile } from "@/data";
+import { profileFacts } from "@/data";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
@@ -22,7 +22,7 @@ export default function AppleIcon() {
           letterSpacing: "-0.02em",
         }}
       >
-        {profile.initials}
+        {profileFacts.initials}
       </div>
     ),
     { ...size },

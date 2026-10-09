@@ -2,10 +2,13 @@
 
 import { headers } from "next/headers";
 
-import { profile } from "@/data";
+import { profileFacts } from "@/data";
+import { dictionaryFor, isLocale, defaultLocale } from "@/i18n";
 import {
   CONTACT_LIMITS,
   HONEYPOT_FIELD,
+  LOCALE_FIELD,
+  fill,
   type ContactField,
   type ContactFormState,
 } from "@/lib/contact";
@@ -41,6 +44,12 @@ export async function sendContactMessage(
   _previousState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
+  // The locale comes from a hidden field; anything unrecognised falls back
+  // rather than throwing, because a tampered value should not cost a message.
+  const submitted = read(formData, LOCALE_FIELD);
+  const locale = isLocale(submitted) ? submitted : defaultLocale;
+  const t = dictionaryFor(locale).contact.form;
+
   const values = {
     name: read(formData, "name"),
     email: read(formData, "email"),
@@ -51,33 +60,33 @@ export async function sendContactMessage(
   // success rather than an error — telling a bot it was detected just teaches
   // whoever wrote it to try something else.
   if (read(formData, HONEYPOT_FIELD) !== "") {
-    return { status: "success", message: "Thanks — your message is on its way." };
+    return { status: "success", message: t.success };
   }
 
   const fieldErrors: Partial<Record<ContactField, string>> = {};
 
   if (values.name.length < CONTACT_LIMITS.name.min) {
-    fieldErrors.name = "Please tell me your name.";
+    fieldErrors.name = t.nameRequired;
   } else if (values.name.length > CONTACT_LIMITS.name.max) {
-    fieldErrors.name = `Keep this under ${CONTACT_LIMITS.name.max} characters.`;
+    fieldErrors.name = fill(t.nameTooLong, { max: CONTACT_LIMITS.name.max });
   }
 
   if (!EMAIL_PATTERN.test(values.email)) {
-    fieldErrors.email = "That does not look like an email address.";
+    fieldErrors.email = t.emailInvalid;
   } else if (values.email.length > CONTACT_LIMITS.email.max) {
-    fieldErrors.email = "That address is too long.";
+    fieldErrors.email = t.emailTooLong;
   }
 
   if (values.message.length < CONTACT_LIMITS.message.min) {
-    fieldErrors.message = `A little more detail, please — at least ${CONTACT_LIMITS.message.min} characters.`;
+    fieldErrors.message = fill(t.messageTooShort, { min: CONTACT_LIMITS.message.min });
   } else if (values.message.length > CONTACT_LIMITS.message.max) {
-    fieldErrors.message = `Keep this under ${CONTACT_LIMITS.message.max} characters.`;
+    fieldErrors.message = fill(t.messageTooLong, { max: CONTACT_LIMITS.message.max });
   }
 
   if (Object.keys(fieldErrors).length > 0) {
     return {
       status: "error",
-      message: "Please check the highlighted fields.",
+      message: t.checkFields,
       fieldErrors,
       values,
     };
@@ -92,13 +101,13 @@ export async function sendContactMessage(
     const minutes = Math.ceil(decision.retryAfterSeconds / 60);
     return {
       status: "error",
-      message: `That is a lot of messages at once. Please try again in ${minutes} minute${minutes === 1 ? "" : "s"}, or email me directly at ${profile.contact.email}.`,
+      message: fill(t.rateLimited, { minutes, email: profileFacts.contact.email }),
       values,
     };
   }
 
   const result = await sendEmail({
-    to: process.env.CONTACT_TO_EMAIL ?? profile.contact.email,
+    to: process.env.CONTACT_TO_EMAIL ?? profileFacts.contact.email,
     replyTo: values.email,
     subject: `Portfolio enquiry from ${values.name}`,
     text: `From: ${values.name} <${values.email}>\n\n${values.message}`,
@@ -109,13 +118,13 @@ export async function sendContactMessage(
     console.error("[contact] send failed:", result.reason);
     return {
       status: "error",
-      message: `Something went wrong on my end. Please email me directly at ${profile.contact.email}.`,
+      message: fill(t.failed, { email: profileFacts.contact.email }),
       values,
     };
   }
 
   return {
     status: "success",
-    message: "Thanks — your message is on its way. I usually reply within a day.",
+    message: t.success,
   };
 }

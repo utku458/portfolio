@@ -34,8 +34,20 @@ interface StatSources {
  * already lost the reader's trust, and hand-written figures go stale the moment
  * an entry is added. Derivation makes both failures impossible.
  */
+/**
+ * The words, supplied by the caller. The arithmetic below is the same in every
+ * language; only the label changes, so only the label is a translation.
+ */
+export interface StatLabels {
+  readonly projects: string;
+  readonly languages: string;
+  readonly experience: string;
+  readonly industry: string;
+}
+
 export function buildHeadlineStats(
   { projects, experience, education }: StatSources,
+  labels: StatLabels,
   today: Date = new Date(),
 ): readonly HeadlineStat[] {
   const productionLanguages = new Set(
@@ -57,26 +69,14 @@ export function buildHeadlineStats(
   );
 
   return [
-    {
-      id: "projects",
-      label: "Projects built",
-      value: projects.length,
-    },
-    {
-      id: "languages",
-      label: "Languages used",
-      value: productionLanguages.size,
-    },
+    { id: "projects", label: labels.projects, value: projects.length },
+    { id: "languages", label: labels.languages, value: productionLanguages.size },
     {
       id: "experience",
-      label: "Years writing code",
+      label: labels.experience,
       value: Math.max(1, today.getFullYear() - earliestStudyYear),
       suffix: "+",
     },
-    {
-      id: "industry",
-      label: "Months in enterprise IT",
-      value: industryMonths,
-    },
+    { id: "industry", label: labels.industry, value: industryMonths },
   ];
 }

@@ -26,3 +26,19 @@ export const INITIAL_CONTACT_STATE: ContactFormState = { status: "idle" };
 
 /** The field a bot fills in and a human never sees. */
 export const HONEYPOT_FIELD = "company";
+
+/**
+ * The locale travels with the submission.
+ *
+ * A Server Action runs outside the route tree, so it cannot read the `lang`
+ * segment the way a Server Component can. Carrying it in the payload is what
+ * lets an error come back in the language the visitor was reading.
+ */
+export const LOCALE_FIELD = "locale";
+
+/** `"Keep this under {max} characters."` → the number filled in. */
+export function fill(template: string, values: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (match, key: string) =>
+    key in values ? String(values[key]) : match,
+  );
+}

@@ -18,6 +18,7 @@ with a name on it.
 | Styling | Tailwind CSS 4 — CSS-first config, OKLCH design tokens |
 | Motion | `motion` (the standalone package, imported as `motion/react`), for interaction only |
 | A11y primitives | Radix UI (dialog) |
+| i18n | English and Turkish, one `[lang]` segment, no library |
 | Hosting | Vercel |
 
 Every route is statically prerendered. There is no database and no runtime API.
@@ -41,6 +42,24 @@ export const projects: readonly Project[] = projectsData;        // ergonomic to
 what makes `ProjectSlug` exact. Those literals are too narrow to consume — a
 project whose `links` is `{}` would make `links.github` a compile error — so
 components import the widened export.
+
+**Two languages, one set of facts.** Every route lives under `app/[lang]`, so
+`/en/projects/armenu` and `/tr/projects/armenu` are two prerendered files
+rather than one page that re-renders. The split in the data layer is the part
+worth reading: dates, URLs, stacks, image dimensions and metric *values* are
+stored once in [`src/data`](src/data), and only prose lives per-locale in
+[`src/i18n/content`](src/i18n/content). A corrected date is corrected in both
+languages because there is only one of it.
+
+Completeness is a compile error, not a review task. The Turkish UI dictionary is
+typed as `typeof en`, so a missing key fails `pnpm typecheck`; project copy is
+keyed by `ProjectSlug`; and arrays merged by position are length-checked during
+the build, so a decision added in English and forgotten in Turkish fails
+`pnpm build` rather than rendering an English paragraph mid-page.
+
+The language switch is a `<Link>`, not a button: two languages are two URLs, and
+that is what makes them indexable, shareable and openable in a new tab. `/`
+redirects once on `Accept-Language` — the only non-static request on the site.
 
 **Client components are interaction shells.** `ProjectCard` is the only client
 component in the projects section; the card's content is passed in as
@@ -97,9 +116,14 @@ src/
 │   ├── layout/             Navbar, Footer, Providers, ThemeToggle
 │   ├── sections/           Hero, Skills, Projects
 │   └── shared/             SectionHeading, icons, JSON-LD
-├── config/site.ts          site metadata + navigation
-├── data/                   the content
+├── config/site.ts          locale-neutral site facts + section ids
+├── data/                   the facts: dates, stacks, links, images
+├── i18n/
+│   ├── config.ts           the locale list everything else derives from
+│   ├── ui/en.ts · tr.ts    interface copy (tr is typed as `typeof en`)
+│   └── content/            per-locale prose, keyed by slug and id
 ├── hooks/                  scroll spy, scroll state, local time
+├── proxy.ts                `/` → a language, once
 ├── lib/
 │   ├── actions/            the contact Server Action
 │   ├── email.ts            Resend over `fetch`, server-only

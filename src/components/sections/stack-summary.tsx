@@ -1,14 +1,7 @@
 import { TechIcon } from "@/components/sections/tech-icon";
 import { techIconSlugFor } from "@/components/sections/tech-icon-slugs";
+import type { Dictionary } from "@/i18n";
 import type { TechKind, TechTag } from "@/types";
-
-const KIND_LABEL: Record<TechKind, string> = {
-  language: "Languages",
-  framework: "Frameworks",
-  database: "Data",
-  platform: "Platform",
-  tooling: "Tooling",
-};
 
 const KIND_ORDER: readonly TechKind[] = [
   "language",
@@ -23,7 +16,13 @@ const KIND_ORDER: readonly TechKind[] = [
  * actually is. On a case study there is room to be precise — and room for the
  * marks to be read rather than skimmed, so they sit at full size here.
  */
-export function StackSummary({ stack }: { readonly stack: readonly TechTag[] }) {
+export function StackSummary({
+  stack,
+  labels,
+}: {
+  readonly stack: readonly TechTag[];
+  readonly labels: Dictionary["caseStudy"]["techKind"];
+}) {
   const groups = KIND_ORDER.map((kind) => ({
     kind,
     items: stack.filter((tech) => tech.kind === kind),
@@ -34,7 +33,7 @@ export function StackSummary({ stack }: { readonly stack: readonly TechTag[] }) 
       {groups.map((group) => (
         <div key={group.kind}>
           <dt className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-            {KIND_LABEL[group.kind]}
+            {labels[group.kind]}
           </dt>
           <dd className="mt-2 flex flex-wrap gap-1.5">
             {group.items.map((tech) => {

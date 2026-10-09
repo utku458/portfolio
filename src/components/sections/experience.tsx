@@ -2,23 +2,27 @@ import { Briefcase, GraduationCap } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { profile } from "@/data";
+import { getProfile } from "@/data";
+import { getDictionary, getLocale } from "@/i18n";
 import { formatDateRange } from "@/lib/format";
 import { buildTimeline } from "@/lib/timeline";
 import { cn } from "@/lib/utils";
 
 const ICONS = { work: Briefcase, education: GraduationCap } as const;
 
-export function Experience() {
-  const timeline = buildTimeline(profile.experience, profile.education);
+export async function Experience() {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+  const profile = getProfile(locale);
+  const timeline = buildTimeline(profile.experience, profile.education, dict.experience.employmentType);
 
   return (
     <section id="experience" className="scroll-mt-24 py-24 sm:py-32">
       <Container>
         <SectionHeading
-          eyebrow="04 — Experience"
-          title="Work and study, in order"
-          lead="Two degrees and an enterprise IT floor, mostly overlapping. The analytical half and the engineering half arrived at the same time."
+          eyebrow={dict.experience.eyebrow}
+          title={dict.experience.title}
+          lead={dict.experience.lead}
         />
 
         <ol className="relative mt-12 border-l border-dashed border-border">
@@ -47,7 +51,7 @@ export function Experience() {
                 </div>
 
                 <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted-foreground">
-                  <span>{formatDateRange(item.period)}</span>
+                  <span>{formatDateRange(item.period, locale, dict.experience.present)}</span>
                   <span aria-hidden className="h-3 w-px bg-border" />
                   <span>{item.meta}</span>
                 </p>

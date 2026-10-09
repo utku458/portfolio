@@ -6,16 +6,20 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { LocalTime } from "@/components/shared/local-time";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { SocialLinks } from "@/components/shared/social-links";
-import { profile } from "@/data";
+import { getProfile } from "@/data";
+import { getDictionary, getLocale } from "@/i18n";
 
-export function Contact() {
+export async function Contact() {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+  const profile = getProfile(locale);
   return (
     <section id="contact" className="scroll-mt-24 py-24 sm:py-32">
       <Container>
         <SectionHeading
-          eyebrow="05 — Contact"
-          title="Let's talk"
-          lead="Open to full-time roles and to interesting freelance work. If you have a problem that needs an architecture rather than a page, I would like to hear about it."
+          eyebrow={dict.contact.eyebrow}
+          title={dict.contact.title}
+          lead={dict.contact.lead}
         />
 
         <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
@@ -33,7 +37,7 @@ export function Contact() {
                 </a>
                 <CopyButton
                   value={profile.contact.email}
-                  label="Copy email address"
+                  label={dict.contact.copyEmail}
                 />
               </div>
             </div>
@@ -42,7 +46,7 @@ export function Contact() {
               <p className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                 Elsewhere
               </p>
-              <SocialLinks className="-ml-2 mt-2" />
+              <SocialLinks socials={profile.socials} className="-ml-2 mt-2" />
             </div>
 
             <div>
@@ -54,7 +58,7 @@ export function Contact() {
                   <MapPin aria-hidden className="size-3.5" />
                   {profile.contact.location}
                 </span>
-                <LocalTime />
+                <LocalTime timeZone={profile.contact.timezone} label={dict.glance.localTime} />
               </p>
             </div>
 
@@ -64,7 +68,7 @@ export function Contact() {
             </p>
           </div>
 
-          <ContactForm />
+          <ContactForm locale={locale} labels={dict.contact.form} />
         </div>
       </Container>
     </section>

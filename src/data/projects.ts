@@ -1,3 +1,5 @@
+import { getProjectCopy, type ProjectCopy } from "@/i18n/content/projects";
+import type { Locale } from "@/i18n/config";
 import type { Project } from "@/types";
 
 /**
@@ -536,25 +538,87 @@ const projectsData = [
  * `projectsData` is authored with `as const satisfies`, which validates every
  * entry against `Project` *and* keeps the literal types — that is what makes
  * `ProjectSlug` below exact rather than `string`.
- *
- * But those literal types are too narrow to consume: a project whose `links` is
- * `{}` gets the type `{}`, so `project.links.github` would be a compile error in
- * the card even though the field is optional on `Project`. The widened export is
- * what components import.
  */
 export type ProjectSlug = (typeof projectsData)[number]["slug"];
 
-export const projects: readonly Project[] = projectsData;
+/** Lengths must line up before anything is merged by position. */
+function zip<T, C>(
+  source: readonly T[] | undefined,
+  copy: readonly C[] | undefined,
+  slug: string,
+  field: string,
+  merge: (item: T, text: C) => T,
+): readonly T[] | undefined {
+  if (!source) return undefined;
+  if (!copy) return source;
+  if (copy.length !== source.length) {
+    // Thrown at build time, so `pnpm verify` fails rather than a visitor
+    // finding one English decision in a Turkish list.
+    throw new Error(
+      `i18n: ${slug}.${field} has ${source.length} entries but the translation has ${copy.length}.`,
+    );
+  }
+  return source.map((item, index) => merge(item, copy[index]!));
+}
+
+function translate(project: Project, copy: ProjectCopy): Project {
+  return {
+    ...project,
+    tagline: copy.tagline,
+    problem: copy.problem,
+    solution: copy.solution,
+    impact: copy.impact ?? project.impact,
+    role: copy.role,
+    architecture: zip(
+      project.architecture,
+      copy.architecture,
+      project.slug,
+      "architecture",
+      (layer, text) => ({ ...layer, name: text.name, responsibility: text.responsibility }),
+    ),
+    decisions: zip(project.decisions, copy.decisions, project.slug, "decisions", (d, text) => ({
+      ...d,
+      title: text.title,
+      rationale: text.rationale,
+    })),
+    metrics: zip(project.metrics, copy.metrics, project.slug, "metrics", (metric, text) => ({
+      ...metric,
+      label: text.label,
+    })),
+    cover: project.cover && copy.cover ? { ...project.cover, alt: copy.cover.alt } : project.cover,
+    gallery: zip(project.gallery, copy.gallery, project.slug, "gallery", (image, text) => ({
+      ...image,
+      alt: text.alt,
+      caption: text.caption ?? image.caption,
+    })),
+  };
+}
+
+/**
+ * The projects in one locale.
+ *
+ * English is the text above; any other locale overlays its translation. The
+ * facts — slug, dates, stack, links, image dimensions, metric *values* — are
+ * never duplicated, so a corrected date is corrected everywhere at once.
+ */
+export function getProjects(locale: Locale): readonly Project[] {
+  const copy = getProjectCopy(locale);
+  if (!copy) return projectsData;
+  return projectsData.map((project) => translate(project, copy[project.slug]));
+}
 
 /** Grid order is the order in this file. */
-export const featuredProjects: readonly Project[] = projects.filter(
-  (project) => project.featured,
-);
-
-export const otherProjects: readonly Project[] = projects.filter(
-  (project) => !project.featured,
-);
-
-export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug);
+export function getFeaturedProjects(locale: Locale): readonly Project[] {
+  return getProjects(locale).filter((project) => project.featured);
 }
+
+export function getOtherProjects(locale: Locale): readonly Project[] {
+  return getProjects(locale).filter((project) => !project.featured);
+}
+
+export function getProjectBySlug(slug: string, locale: Locale): Project | undefined {
+  return getProjects(locale).find((project) => project.slug === slug);
+}
+
+/** Slugs alone, for `generateStaticParams` — no copy needed to list routes. */
+export const projectSlugs: readonly ProjectSlug[] = projectsData.map((p) => p.slug);

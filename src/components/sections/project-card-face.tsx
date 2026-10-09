@@ -8,6 +8,7 @@ import {
 import { ProjectCover } from "@/components/sections/project-cover";
 import { ProjectLinkButtons } from "@/components/sections/project-links";
 import { TechChips } from "@/components/sections/tech-chips";
+import { getDictionary, getLocale } from "@/i18n";
 import { formatDateRange } from "@/lib/format";
 import type { Project } from "@/types";
 
@@ -15,13 +16,16 @@ import type { Project } from "@/types";
  * A server component rendered *into* the client card as `children`, so the
  * card's markup never reaches the browser bundle.
  */
-export function ProjectCardFace({
+export async function ProjectCardFace({
   project,
   coverPriority = false,
 }: {
   readonly project: Project;
   readonly coverPriority?: boolean;
 }) {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+
   return (
     <>
       {project.cover && (
@@ -35,10 +39,10 @@ export function ProjectCardFace({
       )}
 
       <div className="flex flex-wrap items-center gap-2">
-        <ProjectStatusBadge status={project.status} />
-        <ProjectDomainBadge domain={project.domain} />
+        <ProjectStatusBadge status={project.status} labels={dict.projects.status} />
+        <ProjectDomainBadge domain={project.domain} labels={dict.projects.domain} />
         <span className="ms-auto font-mono text-xs text-muted-foreground">
-          {formatDateRange(project.period)}
+          {formatDateRange(project.period, locale, dict.experience.present)}
         </span>
       </div>
 
@@ -50,7 +54,7 @@ export function ProjectCardFace({
       */}
       <h3 className="mt-5 text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
         <Link
-          href={`/projects/${project.slug}`}
+          href={`/${locale}/projects/${project.slug}`}
           className="rounded-sm after:absolute after:inset-0 after:content-['']"
         >
           {project.title}
@@ -65,7 +69,7 @@ export function ProjectCardFace({
       <dl className="mt-7 grid gap-6 sm:grid-cols-2">
         <div>
           <dt className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-            The problem
+            {dict.projects.theProblem}
           </dt>
           <dd className="mt-2 text-sm leading-relaxed text-pretty-balance">
             {project.problem}
@@ -73,7 +77,7 @@ export function ProjectCardFace({
         </div>
         <div>
           <dt className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-            What I built
+            {dict.projects.whatIBuilt}
           </dt>
           <dd className="mt-2 text-sm leading-relaxed text-pretty-balance">
             {project.solution}
@@ -85,12 +89,12 @@ export function ProjectCardFace({
 
       <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3">
         <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-transform duration-300 group-hover:translate-x-0.5">
-          Read the case study
+          {dict.projects.readCaseStudy}
           <ArrowRight aria-hidden className="size-4" />
         </span>
         {/* Lifted above the stretched link so these stay independently clickable. */}
         <div className="relative z-10 flex flex-wrap items-center gap-2">
-          <ProjectLinkButtons links={project.links} title={project.title} />
+          <ProjectLinkButtons links={project.links} title={project.title} labels={dict.projects.links} />
         </div>
       </div>
     </>

@@ -1,14 +1,8 @@
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { profile } from "@/data";
+import { getProfile } from "@/data";
+import { getDictionary, getLocale } from "@/i18n";
 import type { LanguageLevel } from "@/types";
-
-const LANGUAGE_LABEL: Record<LanguageLevel, string> = {
-  native: "Native",
-  professional: "Professional",
-  intermediate: "Intermediate",
-  elementary: "Elementary",
-};
 
 /** Filled dots out of four — a level anyone can read at a glance. */
 const LANGUAGE_DOTS: Record<LanguageLevel, number> = {
@@ -36,11 +30,15 @@ function LanguageMeter({ level }: { readonly level: LanguageLevel }) {
   );
 }
 
-export function About() {
+export async function About() {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+  const profile = getProfile(locale);
+
   return (
     <section id="about" className="scroll-mt-24 py-24 sm:py-32">
       <Container>
-        <SectionHeading eyebrow="01 — About" title="Where I come from" />
+        <SectionHeading eyebrow={dict.about.eyebrow} title={dict.about.title} />
 
         <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-16">
           <div className="max-w-(--measure-prose) space-y-5">
@@ -57,7 +55,7 @@ export function About() {
           <aside className="space-y-8">
             <div>
               <h3 className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-                Education
+                {dict.experience.education}
               </h3>
               <ul className="mt-4 space-y-4">
                 {profile.education.map((entry) => (
@@ -73,7 +71,7 @@ export function About() {
 
             <div>
               <h3 className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-                Languages
+                {dict.about.languagesHeading}
               </h3>
               <ul className="mt-4 space-y-2.5">
                 {profile.languages.map((language) => (
@@ -84,7 +82,7 @@ export function About() {
                     <span>{language.name}</span>
                     <span className="flex items-center gap-2">
                       <span className="text-xs text-muted-foreground">
-                        {LANGUAGE_LABEL[language.level]}
+                        {dict.about.languageLevel[language.level]}
                       </span>
                       <LanguageMeter level={language.level} />
                     </span>

@@ -18,42 +18,32 @@ function resolveSiteUrl(): string {
   return "http://localhost:3000";
 }
 
+/**
+ * The facts about the site. The title, description and keywords are prose and
+ * live per-locale in `i18n/content/site.ts`; a domain duplicated into two
+ * language files is a domain that can be wrong in one of them.
+ */
 export const siteConfig: SiteConfig = {
   name: "Utku Altınay",
-  title: "Utku Altınay — Full-Stack Developer",
-  description:
-    "Full-stack developer in İstanbul. I build multi-platform systems: a C# .NET API at the centre, with native iOS, Android and React clients around it.",
   url: resolveSiteUrl(),
-  locale: "en_US",
-  keywords: [
-    "Utku Altınay",
-    "Full-Stack Developer",
-    "Next.js",
-    "React",
-    "TypeScript",
-    "C# .NET",
-    "Kotlin",
-    "SwiftUI",
-    "İstanbul",
-  ],
   ogImage: "/opengraph-image",
 };
 
 /**
- * Section anchors. The order is the scroll order, so the scroll-spy hook can
- * derive the active item from this array alone.
- */
-/**
- * Root-relative hrefs, not bare fragments: the navbar and footer also render on
- * `/projects/[slug]`, where `#about` would point at an element that does not
- * exist on that page and silently do nothing.
+ * Section anchors, in scroll order, so the scroll-spy hook can derive the
+ * active item from this array alone.
+ *
+ * Ids only. The label comes from the dictionary and the href is built with the
+ * active locale, because the navbar and footer also render on
+ * `/[lang]/projects/[slug]` — where a bare `#about` would point at an element
+ * that does not exist on that page and silently do nothing.
  */
 export const navItems = [
-  { id: "about", label: "About", href: "/#about" },
-  { id: "skills", label: "Skills", href: "/#skills" },
-  { id: "projects", label: "Projects", href: "/#projects" },
-  { id: "experience", label: "Experience", href: "/#experience" },
-  { id: "contact", label: "Contact", href: "/#contact" },
+  { id: "about" },
+  { id: "skills" },
+  { id: "projects" },
+  { id: "experience" },
+  { id: "contact" },
 ] as const satisfies readonly NavItem[];
 
 export type SectionId = (typeof navItems)[number]["id"];

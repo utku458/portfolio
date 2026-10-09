@@ -3,10 +3,13 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 
-import { navItems } from "@/config/site";
+import { navItems, type SectionId } from "@/config/site";
+import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 
 interface NavLinksProps {
+  readonly locale: Locale;
+  readonly labels: Record<SectionId, string>;
   readonly activeId: string | null;
   /** Called after a link is chosen — lets the mobile drawer close itself. */
   readonly onNavigate?: () => void;
@@ -18,6 +21,8 @@ interface NavLinksProps {
  * items instead of fading out and in. One DOM node, no per-item animation state.
  */
 export function NavLinks({
+  locale,
+  labels,
   activeId,
   onNavigate,
   orientation = "horizontal",
@@ -34,7 +39,7 @@ export function NavLinks({
         return (
           <li key={item.id} className="relative">
             <Link
-              href={item.href}
+              href={`/${locale}/#${item.id}`}
               onClick={onNavigate}
               aria-current={isActive ? "location" : undefined}
               className={cn(
@@ -45,7 +50,7 @@ export function NavLinks({
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {item.label}
+              {labels[item.id]}
             </Link>
             {isActive && (
               <motion.span

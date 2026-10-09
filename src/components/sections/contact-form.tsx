@@ -6,14 +6,21 @@ import { useActionState, useId } from "react";
 import { FieldError, Input, Label, Textarea } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { sendContactMessage } from "@/lib/actions/contact";
+import type { Dictionary, Locale } from "@/i18n";
 import {
   CONTACT_LIMITS,
   HONEYPOT_FIELD,
   INITIAL_CONTACT_STATE,
+  LOCALE_FIELD,
 } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
-export function ContactForm() {
+interface ContactFormProps {
+  readonly locale: Locale;
+  readonly labels: Dictionary["contact"]["form"];
+}
+
+export function ContactForm({ locale, labels }: ContactFormProps) {
   const [state, formAction, pending] = useActionState(
     sendContactMessage,
     INITIAL_CONTACT_STATE,
@@ -53,8 +60,11 @@ export function ContactForm() {
         action={formAction}
         className="space-y-5"
       >
+        {/* Travels with the submission so the Server Action can answer in the
+            language the visitor is reading. */}
+        <input type="hidden" name={LOCALE_FIELD} value={locale} />
         <div>
-          <Label htmlFor={nameId}>Name</Label>
+          <Label htmlFor={nameId}>{labels.name}</Label>
           <Input
             id={nameId}
             name="name"
@@ -70,7 +80,7 @@ export function ContactForm() {
         </div>
 
         <div>
-          <Label htmlFor={emailId}>Email</Label>
+          <Label htmlFor={emailId}>{labels.email}</Label>
           <Input
             id={emailId}
             name="email"
@@ -87,7 +97,7 @@ export function ContactForm() {
         </div>
 
         <div>
-          <Label htmlFor={messageId}>Message</Label>
+          <Label htmlFor={messageId}>{labels.message}</Label>
           <Textarea
             id={messageId}
             name="message"
@@ -95,7 +105,7 @@ export function ContactForm() {
             rows={5}
             minLength={CONTACT_LIMITS.message.min}
             maxLength={CONTACT_LIMITS.message.max}
-            placeholder="What are you working on?"
+            placeholder={labels.messagePlaceholder}
             defaultValue={state.values?.message ?? ""}
             aria-invalid={Boolean(errors?.message)}
             aria-describedby={errors?.message ? `${messageId}-error` : undefined}
@@ -118,7 +128,7 @@ export function ContactForm() {
 
         <Button type="submit" size="lg" disabled={pending} className="w-full sm:w-auto">
           <Send aria-hidden />
-          {pending ? "Sending…" : "Send message"}
+          {pending ? labels.sending : labels.send}
         </Button>
       </form>
     </div>

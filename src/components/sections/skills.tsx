@@ -5,14 +5,9 @@ import { Container } from "@/components/layout/container";
 import { SkillCard } from "@/components/sections/skill-card";
 import { LevelDot, SkillChip } from "@/components/sections/skill-chip";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { skillGroups } from "@/data";
+import { getSkillGroups } from "@/data";
+import { getDictionary, getLocale } from "@/i18n";
 import type { ProficiencyLevel, SkillCategory } from "@/types";
-
-const LEGEND: readonly { level: ProficiencyLevel; label: string }[] = [
-  { level: "core", label: "Core — reach for it daily" },
-  { level: "proficient", label: "Proficient — shipped production work with it" },
-  { level: "familiar", label: "Familiar — used it, still growing" },
-];
 
 /** `Record` so a new category cannot be added without giving it a mark. */
 const CATEGORY_ICONS: Record<
@@ -25,18 +20,28 @@ const CATEGORY_ICONS: Record<
   tooling: Wrench,
 };
 
-export function Skills() {
+export async function Skills() {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+  const skillGroups = getSkillGroups(locale);
+
+  const legend: readonly { level: ProficiencyLevel; label: string }[] = [
+    { level: "core", label: dict.skills.level.core },
+    { level: "proficient", label: dict.skills.level.proficient },
+    { level: "familiar", label: dict.skills.level.familiar },
+  ];
+
   return (
     <section id="skills" className="scroll-mt-24 py-24 sm:py-32">
       <Container>
         <SectionHeading
-          eyebrow="02 — Skills"
-          title="What I work with"
-          lead="Grouped by where each piece sits in the stack. Hover or focus any item to see what I actually built with it — a badge with no project behind it is decoration, not evidence."
+          eyebrow={dict.skills.eyebrow}
+          title={dict.skills.title}
+          lead={dict.skills.lead}
         />
 
         <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-          {LEGEND.map((entry) => (
+          {legend.map((entry) => (
             <li key={entry.level} className="flex items-center gap-2">
               <LevelDot level={entry.level} />
               {entry.label}

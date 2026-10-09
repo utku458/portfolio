@@ -3,6 +3,7 @@ import type { ComponentType, SVGProps } from "react";
 
 import { GitHubIcon } from "@/components/shared/brand-icons";
 import { Button } from "@/components/ui/button";
+import type { Dictionary } from "@/i18n";
 import type { ProjectLinks } from "@/types";
 
 interface LinkEntry {
@@ -18,22 +19,24 @@ interface LinkEntry {
 export function ProjectLinkButtons({
   links,
   title,
+  labels,
 }: {
   readonly links: ProjectLinks;
   readonly title: string;
+  readonly labels: Dictionary["projects"]["links"];
 }) {
   const entries: LinkEntry[] = [];
   if (links.demo) {
-    entries.push({ href: links.demo, label: "Live demo", icon: ExternalLink });
+    entries.push({ href: links.demo, label: labels.demo, icon: ExternalLink });
   }
   if (links.github) {
-    entries.push({ href: links.github, label: "Source", icon: GitHubIcon });
+    entries.push({ href: links.github, label: labels.github, icon: GitHubIcon });
   }
   if (links.appStore) {
-    entries.push({ href: links.appStore, label: "App Store", icon: Smartphone });
+    entries.push({ href: links.appStore, label: labels.appStore, icon: Smartphone });
   }
   if (links.playStore) {
-    entries.push({ href: links.playStore, label: "Google Play", icon: Smartphone });
+    entries.push({ href: links.playStore, label: labels.playStore, icon: Smartphone });
   }
 
   if (entries.length === 0) return null;

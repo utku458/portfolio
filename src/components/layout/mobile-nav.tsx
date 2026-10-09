@@ -7,9 +7,15 @@ import { useState } from "react";
 import { NavLinks } from "@/components/layout/nav-links";
 import { SocialLinks } from "@/components/shared/social-links";
 import { Button } from "@/components/ui/button";
-import { profile } from "@/data";
+import type { SectionId } from "@/config/site";
+import { profileFacts } from "@/data/profile";
+import type { Dictionary, Locale } from "@/i18n";
+import type { SocialLink } from "@/types";
 
 interface MobileNavProps {
+  readonly locale: Locale;
+  readonly nav: Dictionary["nav"];
+  readonly socials: readonly SocialLink[];
   readonly activeId: string | null;
 }
 
@@ -23,8 +29,16 @@ interface MobileNavProps {
  * vanishing. Both are disabled automatically under `prefers-reduced-motion`
  * by the global rule in `globals.css`.
  */
-export function MobileNav({ activeId }: MobileNavProps) {
+export function MobileNav({ locale, nav, socials, activeId }: MobileNavProps) {
   const [open, setOpen] = useState(false);
+
+  const labels = {
+    about: nav.about,
+    skills: nav.skills,
+    projects: nav.projects,
+    experience: nav.experience,
+    contact: nav.contact,
+  } satisfies Record<SectionId, string>;
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -32,7 +46,7 @@ export function MobileNav({ activeId }: MobileNavProps) {
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Open navigation menu"
+          aria-label={nav.openMenu}
           className="md:hidden"
         >
           <Menu className="size-5" />
@@ -45,23 +59,23 @@ export function MobileNav({ activeId }: MobileNavProps) {
         <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-xs flex-col border-l border-border bg-background p-6 shadow-2xl data-[state=closed]:animate-slide-out-right data-[state=open]:animate-slide-in-right md:hidden">
           <div className="flex items-center justify-between">
             <Dialog.Title className="font-mono text-sm font-medium tracking-tight">
-              {profile.initials}
+              {profileFacts.initials}
               <span className="text-primary">.</span>
             </Dialog.Title>
             <Dialog.Close asChild>
-              <Button variant="ghost" size="icon" aria-label="Close navigation menu">
+              <Button variant="ghost" size="icon" aria-label={nav.closeMenu}>
                 <X className="size-5" />
               </Button>
             </Dialog.Close>
           </div>
 
           {/* Required by Radix for screen readers; visually redundant here. */}
-          <Dialog.Description className="sr-only">
-            Jump to a section of the page.
-          </Dialog.Description>
+          <Dialog.Description className="sr-only">{nav.menuDescription}</Dialog.Description>
 
-          <nav className="mt-8 flex-1" aria-label="Mobile">
+          <nav className="mt-8 flex-1" aria-label={nav.mobile}>
             <NavLinks
+              locale={locale}
+              labels={labels}
               activeId={activeId}
               orientation="vertical"
               onNavigate={() => setOpen(false)}
@@ -69,14 +83,14 @@ export function MobileNav({ activeId }: MobileNavProps) {
           </nav>
 
           <div className="space-y-4 border-t border-border pt-6">
-            {profile.resumeUrl && (
+            {profileFacts.resumeUrl && (
               <Button asChild variant="outline" size="md" className="w-full">
-                <a href={profile.resumeUrl} download>
-                  Download résumé
+                <a href={profileFacts.resumeUrl} download>
+                  {nav.downloadResume}
                 </a>
               </Button>
             )}
-            <SocialLinks className="-ml-2" />
+            <SocialLinks socials={socials} className="-ml-2" />
           </div>
         </Dialog.Content>
       </Dialog.Portal>

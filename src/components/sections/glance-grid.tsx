@@ -3,14 +3,10 @@ import { MapPin } from "lucide-react";
 import { NoteCell, StatCell } from "@/components/sections/glance-cells";
 import { LocalTime } from "@/components/shared/local-time";
 import { BentoCell, BentoGrid } from "@/components/ui/bento";
-import { profile, projects } from "@/data";
+import { getProfile, getProjects } from "@/data";
+import { getDictionary, getLocale } from "@/i18n";
+import { fill } from "@/lib/contact";
 import { buildHeadlineStats } from "@/lib/stats";
-
-const AVAILABILITY_NOTE: Record<typeof profile.availability, string> = {
-  "open-to-work": "Open to full-time roles and selective freelance work.",
-  "open-to-offers": "Open to the right offer.",
-  "not-looking": "Heads-down on current work.",
-};
 
 /**
  * The composition site.
@@ -21,12 +17,19 @@ const AVAILABILITY_NOTE: Record<typeof profile.availability, string> = {
  * separation is the whole point — a new layout is a new arrangement here, not a
  * rewrite anywhere else.
  */
-export function GlanceGrid() {
-  const stats = buildHeadlineStats({
-    projects,
-    experience: profile.experience,
-    education: profile.education,
-  });
+export async function GlanceGrid() {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+  const profile = getProfile(locale);
+
+  const stats = buildHeadlineStats(
+    {
+      projects: getProjects(locale),
+      experience: profile.experience,
+      education: profile.education,
+    },
+    dict.stats,
+  );
 
   return (
     <BentoGrid>
@@ -37,23 +40,26 @@ export function GlanceGrid() {
       ))}
 
       <BentoCell span={2}>
-        <NoteCell label="Currently">
+        <NoteCell label={dict.glance.currently}>
           <p>
-            {profile.education[0]?.field} at {profile.education[0]?.institution}.{" "}
-            {AVAILABILITY_NOTE[profile.availability]}
+            {fill(dict.glance.studyingAt, {
+              field: profile.education[0]?.field ?? "",
+              institution: profile.education[0]?.institution ?? "",
+            })}{" "}
+            {dict.glance.availabilityNote[profile.availability]}
           </p>
         </NoteCell>
       </BentoCell>
 
       <BentoCell span={2}>
-        <NoteCell label="Based in">
+        <NoteCell label={dict.glance.basedIn}>
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="inline-flex items-center gap-1.5">
               <MapPin aria-hidden className="size-3.5 text-muted-foreground" />
               {profile.contact.location}
             </span>
             <span className="text-muted-foreground">
-              <LocalTime />
+              <LocalTime timeZone={profile.contact.timezone} label={dict.glance.localTime} />
             </span>
           </p>
         </NoteCell>

@@ -1,9 +1,10 @@
-export { profile } from "./profile";
-export { skillGroups, skills } from "./skills";
+export { getProfile, profileFacts } from "./profile";
+export { getSkillGroups, getSkills, type SkillId } from "./skills";
 export {
-  featuredProjects,
+  getFeaturedProjects,
+  getOtherProjects,
   getProjectBySlug,
-  otherProjects,
-  projects,
+  getProjects,
+  projectSlugs,
   type ProjectSlug,
 } from "./projects";

@@ -2,7 +2,8 @@ import { Container } from "@/components/layout/container";
 import { ProjectCard } from "@/components/sections/project-card";
 import { ProjectCardFace } from "@/components/sections/project-card-face";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { featuredProjects, otherProjects } from "@/data";
+import { getFeaturedProjects, getOtherProjects } from "@/data";
+import { getDictionary, getLocale } from "@/i18n";
 import type { Project } from "@/types";
 
 function Card({
@@ -19,14 +20,19 @@ function Card({
   );
 }
 
-export function Projects() {
+export async function Projects() {
+  const locale = await getLocale();
+  const dict = await getDictionary();
+  const featuredProjects = getFeaturedProjects(locale);
+  const otherProjects = getOtherProjects(locale);
+
   return (
     <section id="projects" className="scroll-mt-24 py-24 sm:py-32">
       <Container>
         <SectionHeading
-          eyebrow="03 — Projects"
-          title="Things I have built"
-          lead="Every one of these started as a problem somebody actually had. Each card opens into a case study: the architecture, and the decisions behind it."
+          eyebrow={dict.projects.eyebrow}
+          title={dict.projects.title}
+          lead={dict.projects.lead}
         />
 
         <div className="mt-12 space-y-6">

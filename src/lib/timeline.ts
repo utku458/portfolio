@@ -15,13 +15,6 @@ export interface TimelineItem {
   readonly tech: readonly string[];
 }
 
-const EMPLOYMENT_LABEL: Record<EmploymentType, string> = {
-  "full-time": "Full-time",
-  "part-time": "Part-time",
-  internship: "Internship",
-  freelance: "Freelance",
-};
-
 /**
  * Work and study interleaved on one rail rather than split into two lists.
  *
@@ -35,13 +28,14 @@ const EMPLOYMENT_LABEL: Record<EmploymentType, string> = {
 export function buildTimeline(
   experience: readonly Experience[],
   education: readonly Education[],
+  employmentLabel: Record<EmploymentType, string>,
 ): readonly TimelineItem[] {
   const work: TimelineItem[] = experience.map((entry) => ({
     id: entry.id,
     kind: "work",
     title: entry.role,
     org: entry.company,
-    meta: `${EMPLOYMENT_LABEL[entry.type]} · ${entry.location}`,
+    meta: `${employmentLabel[entry.type]} · ${entry.location}`,
     period: entry.period,
     summary: entry.summary,
     details: entry.achievements,

@@ -1,5 +1,6 @@
 import { siteConfig } from "@/config/site";
-import { profile, skills } from "@/data";
+import { getProfile, getSkills } from "@/data";
+import { getLocale } from "@/i18n";
 import type { Project } from "@/types";
 
 /**
@@ -25,7 +26,10 @@ function JsonLd({ data }: { readonly data: unknown }) {
  * engine answer "who is Utku Altınay" with a knowledge panel rather than a blue
  * link.
  */
-export function PersonJsonLd() {
+export async function PersonJsonLd() {
+  const locale = await getLocale();
+  const profile = getProfile(locale);
+
   return (
     <JsonLd
       data={{
@@ -33,9 +37,9 @@ export function PersonJsonLd() {
         "@type": "Person",
         name: profile.name,
         jobTitle: profile.title,
-        description: siteConfig.description,
-        url: siteConfig.url,
-        image: `${siteConfig.url}/opengraph-image`,
+        description: profile.headline,
+        url: `${siteConfig.url}/${locale}`,
+        image: `${siteConfig.url}/${locale}/opengraph-image`,
         email: `mailto:${profile.contact.email}`,
         // `workLocation`, not `address`. The distinction is not pedantry: a
         // `PostalAddress` on a Person invites a home address, and search engines
@@ -52,7 +56,7 @@ export function PersonJsonLd() {
           "@type": "CollegeOrUniversity",
           name: entry.institution,
         })),
-        knowsAbout: skills.map((skill) => skill.name),
+        knowsAbout: getSkills(locale).map((skill) => skill.name),
         knowsLanguage: profile.languages.map((language) => language.name),
       }}
     />
@@ -60,7 +64,9 @@ export function PersonJsonLd() {
 }
 
 /** Structured data for one case study. */
-export function ProjectJsonLd({ project }: { readonly project: Project }) {
+export async function ProjectJsonLd({ project }: { readonly project: Project }) {
+  const profile = getProfile(await getLocale());
+
   return (
     <JsonLd
       data={{

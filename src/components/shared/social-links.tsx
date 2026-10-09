@@ -2,8 +2,7 @@ import { Mail } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 
 import { GitHubIcon, LinkedInIcon } from "@/components/shared/brand-icons";
-import { profile } from "@/data";
-import type { SocialPlatform } from "@/types";
+import type { SocialLink, SocialPlatform } from "@/types";
 import { cn } from "@/lib/utils";
 
 /**
@@ -16,10 +15,20 @@ const ICONS: Record<SocialPlatform, ComponentType<SVGProps<SVGSVGElement>>> = {
   email: Mail,
 };
 
-export function SocialLinks({ className }: { readonly className?: string }) {
+interface SocialLinksProps {
+  /**
+   * Passed in rather than imported: this renders inside the mobile drawer,
+   * which is a client component, and reading the locale here would drag the
+   * dictionary into the browser bundle for three `aria-label`s.
+   */
+  readonly socials: readonly SocialLink[];
+  readonly className?: string;
+}
+
+export function SocialLinks({ socials, className }: SocialLinksProps) {
   return (
     <ul className={cn("flex items-center gap-1", className)}>
-      {profile.socials.map((social) => {
+      {socials.map((social) => {
         const Icon = ICONS[social.platform];
         const isExternal = social.href.startsWith("http");
         return (
