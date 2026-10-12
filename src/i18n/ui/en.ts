@@ -156,6 +156,10 @@ export const en = {
     copyEmail: "Copy email address",
     copied: "Copied",
     orEmailDirectly: "or email me directly",
+    emailLabel: "Email",
+    elsewhere: "Elsewhere",
+    basedIn: "Based in",
+    note: "A direct email always reaches me. The form goes to the same inbox — use whichever you prefer.",
     form: {
       name: "Your name",
       email: "Your email",

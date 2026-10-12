@@ -151,6 +151,10 @@ export const tr: Dictionary = {
     copyEmail: "E-posta adresini kopyala",
     copied: "Kopyalandı",
     orEmailDirectly: "ya da doğrudan e-posta gönderin",
+    emailLabel: "E-posta",
+    elsewhere: "Diğer kanallar",
+    basedIn: "Konum",
+    note: "Doğrudan e-posta her zaman bana ulaşır. Form da aynı gelen kutusuna düşüyor — hangisi kolayınıza gelirse.",
     form: {
       name: "Adınız",
       email: "E-posta adresiniz",

@@ -26,7 +26,7 @@ export async function Contact() {
           <div className="space-y-8">
             <div>
               <p className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-                Email
+                {dict.contact.emailLabel}
               </p>
               <div className="mt-2 flex items-center gap-1">
                 <a
@@ -44,14 +44,14 @@ export async function Contact() {
 
             <div>
               <p className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-                Elsewhere
+                {dict.contact.elsewhere}
               </p>
               <SocialLinks socials={profile.socials} className="-ml-2 mt-2" />
             </div>
 
             <div>
               <p className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
-                Based in
+                {dict.contact.basedIn}
               </p>
               <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5">
@@ -63,8 +63,7 @@ export async function Contact() {
             </div>
 
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground text-pretty-balance">
-              A direct email always reaches me. The form goes to the same inbox —
-              use whichever you prefer.
+              {dict.contact.note}
             </p>
           </div>
 
