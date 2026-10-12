@@ -19,7 +19,7 @@ with a name on it.
 | Motion | `motion` (the standalone package, imported as `motion/react`), for interaction only |
 | A11y primitives | Radix UI (dialog) |
 | i18n | English and Turkish, one `[lang]` segment, no library |
-| Hosting | Vercel |
+| Hosting | Any Docker host — standalone output, `Dockerfile` in the repo |
 
 Every route is statically prerendered. There is no database and no runtime API.
 
@@ -134,27 +134,47 @@ src/
 
 ## Deploying
 
-Import the repository on Vercel; the defaults are correct.
+The app is containerised and self-hostable. `output: "standalone"` plus the
+`Dockerfile` in the repo root produce an image that needs no package manager at
+runtime; `proxy.ts` and `next/image` both work, which a static export cannot do.
 
-Canonical URLs, Open Graph URLs and `sitemap.xml` are all derived from one
-value. On Vercel it resolves automatically from `VERCEL_PROJECT_PRODUCTION_URL`,
-which is set on preview deployments too — so a preview's canonical URL points at
-production rather than at itself, which is what you want. Once a custom domain is
-attached, set:
+### Coolify (Hetzner, or any Docker host)
 
+1. **New Resource → Public Repository**, pointing at this repo, branch `main`.
+2. **Build Pack: Dockerfile.** Not Nixpacks — the Dockerfile here already
+   handles pnpm, the standalone copy steps and sharp.
+3. **Port: 3000.**
+4. **Environment variables.** `NEXT_PUBLIC_SITE_URL` must be marked as a
+   **build** variable; the rest are runtime only:
+
+   | Variable | Build? | Value |
+   |---|---|---|
+   | `NEXT_PUBLIC_SITE_URL` | **yes** | `https://your-domain.dev` |
+   | `RESEND_API_KEY` | no | from [resend.com](https://resend.com) |
+   | `CONTACT_TO_EMAIL` | no | optional, defaults to the address in `src/data/profile.ts` |
+   | `CONTACT_FROM_EMAIL` | no | optional, needs a domain verified with Resend |
+
+5. Set the domain in Coolify and let it issue the certificate. Deploy.
+
+**Why the build/runtime distinction matters.** Anything prefixed
+`NEXT_PUBLIC_` is inlined into the bundle when `next build` runs, not read when
+the server starts. Set it only at runtime and the site works perfectly while
+every canonical URL, `hreflang` and sitemap entry says `http://localhost:3000` —
+a failure that is invisible in a browser and obvious to a crawler. The
+`Dockerfile` takes it as an `ARG` for exactly this reason, and Coolify passes
+build variables through as build args.
+
+### Checking the image locally
+
+```bash
+docker build --build-arg NEXT_PUBLIC_SITE_URL=https://your-domain.dev -t portfolio .
+docker run --rm -p 3000:3000 portfolio
 ```
-NEXT_PUBLIC_SITE_URL=https://utkualtinay.dev
-```
 
-To make the contact form deliver, add a [Resend](https://resend.com) key:
-
-```
-RESEND_API_KEY=re_xxxxxxxxxxxx
-CONTACT_TO_EMAIL=altinayutku0@gmail.com     # optional, defaults to the address in src/data/profile.ts
-CONTACT_FROM_EMAIL=hello@utkualtinay.dev   # optional, needs a verified domain
-```
-
-See [`.env.example`](.env.example) for the full annotated list.
+`/` should answer `307` to `/en` or `/tr` depending on your `Accept-Language`,
+and `/_next/image?url=…` should come back as `image/webp` — that second one is
+the check that sharp is present. Without it `next/image` fails at runtime, which
+is why `sharp` is a direct dependency here even though Vercel supplies its own.
 
 ## Licence
 

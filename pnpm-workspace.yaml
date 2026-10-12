@@ -1,3 +1,6 @@
 allowBuilds:
-  sharp: false
+  # Needed again: on Vercel the platform supplies sharp, but a self-hosted
+  # Node server has to bring its own — without it `next start` cannot serve
+  # /_next/image at all.
+  sharp: true
   unrs-resolver: false
