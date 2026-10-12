@@ -1,10 +1,10 @@
-# utkualtinay.dev
+# utkualtinay.com
 
 Personal portfolio of **Utku Altınay** — full-stack developer, İstanbul.
 Built as a demonstration of architecture and code quality, not just as a page
 with a name on it.
 
-> **Live:** not deployed yet · **Résumé:** [`public/documents`](public/documents) ·
+> **Live:** [utkualtinay.com](https://utkualtinay.com) · **Résumé:** [`public/documents`](public/documents) ·
 > **Contact:** the form on the site, or [altinayutku0@gmail.com](mailto:altinayutku0@gmail.com)
 
 ---
@@ -149,12 +149,39 @@ runtime; `proxy.ts` and `next/image` both work, which a static export cannot do.
 
    | Variable | Build? | Value |
    |---|---|---|
-   | `NEXT_PUBLIC_SITE_URL` | **yes** | `https://your-domain.dev` |
+   | `NEXT_PUBLIC_SITE_URL` | **yes** | `https://utkualtinay.com` |
    | `RESEND_API_KEY` | no | from [resend.com](https://resend.com) |
    | `CONTACT_TO_EMAIL` | no | optional, defaults to the address in `src/data/profile.ts` |
    | `CONTACT_FROM_EMAIL` | no | optional, needs a domain verified with Resend |
 
 5. Set the domain in Coolify and let it issue the certificate. Deploy.
+
+### Behind Cloudflare
+
+An `A` record for the apex and `www`, pointing at the host. Two settings decide
+whether this works at all:
+
+- **SSL/TLS mode must be Full (strict), never Flexible.** Coolify's proxy
+  redirects HTTP to HTTPS; Flexible makes Cloudflare speak HTTP to the origin,
+  so the origin redirects, Cloudflare asks again over HTTP, and the browser
+  reports a redirect loop. Full (strict) also means the origin certificate is
+  actually verified rather than merely present.
+- **The proxy must be off while Let's Encrypt issues.** The HTTP-01 challenge
+  is served by the origin on port 80; with the orange cloud on, Cloudflare
+  answers instead and validation fails. Set the records to DNS-only, deploy,
+  let the certificate issue, then turn the proxy back on.
+
+Leave **Rocket Loader** off — it rewrites script tags, which is a poor bargain
+on a page whose scripts are already deferred by the framework.
+
+`/` is the one non-static response on the site: it reads `Accept-Language` and
+redirects. It sends `Vary: Accept-Language`, but Cloudflare only varies its
+cache on `Accept-Encoding` — so if a cache rule is ever added, exclude `/`,
+or the first visitor's language becomes everyone's.
+
+The contact form's rate limit keys on `CF-Connecting-IP` when it is present.
+That header is unspoofable because Cloudflare overwrites it; `X-Forwarded-For`
+is not, because Cloudflare *appends* to whatever the client sent.
 
 **Why the build/runtime distinction matters.** Anything prefixed
 `NEXT_PUBLIC_` is inlined into the bundle when `next build` runs, not read when
@@ -167,7 +194,7 @@ build variables through as build args.
 ### Checking the image locally
 
 ```bash
-docker build --build-arg NEXT_PUBLIC_SITE_URL=https://your-domain.dev -t portfolio .
+docker build --build-arg NEXT_PUBLIC_SITE_URL=https://utkualtinay.com -t portfolio .
 docker run --rm -p 3000:3000 portfolio
 ```
 

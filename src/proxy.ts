@@ -37,7 +37,13 @@ export function proxy(request: NextRequest) {
   url.pathname = `/${locale}`;
   // 307, not 308: the choice depends on a header, so it must not be cached as
   // permanent by a browser that later arrives with different preferences.
-  return NextResponse.redirect(url, 307);
+  const response = NextResponse.redirect(url, 307);
+  // States the dependency for any cache in the path. Browsers and standard
+  // reverse proxies honour it; Cloudflare only varies on `Accept-Encoding`, so
+  // this is necessary but not sufficient — `/` must stay out of any
+  // "Cache Everything" rule, or one visitor's language is served to everyone.
+  response.headers.set("Vary", "Accept-Language");
+  return response;
 }
 
 export const config = {

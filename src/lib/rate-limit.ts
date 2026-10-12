@@ -75,13 +75,22 @@ export function createRateLimiter({ limit, windowMs, now = Date.now }: RateLimit
 /**
  * Derives a rate-limit key from proxy headers.
  *
- * `x-forwarded-for` is a client-controlled header everywhere except behind a
- * proxy that overwrites it — which is exactly what Vercel and every other
- * managed platform does. The leftmost entry is the original client. Falling
- * back to a single shared bucket when no header is present is deliberate: an
- * unknown origin should still be counted, not waved through.
+ * Order matters, and the reason is spoofing. `cf-connecting-ip` is set by
+ * Cloudflare to exactly one address and *overwritten* on every request, so a
+ * client cannot forge it. `x-forwarded-for` is only trustworthy if the nearest
+ * proxy replaces it — Cloudflare instead *appends* the real address to whatever
+ * the client sent, so behind Cloudflare the leftmost entry is attacker-chosen
+ * and a limiter keyed on it can be defeated by varying one header. Taking the
+ * rightmost entry would be wrong on a platform that replaces the header
+ * (Vercel), which is why the unspoofable header is simply preferred first.
+ *
+ * Falling back to a single shared bucket when nothing identifies the caller is
+ * deliberate: an unknown origin should still be counted, not waved through.
  */
 export function clientKeyFrom(headers: Headers): string {
+  const cloudflare = headers.get("cf-connecting-ip")?.trim();
+  if (cloudflare) return cloudflare;
+
   const forwarded = headers.get("x-forwarded-for");
   const first = forwarded?.split(",")[0]?.trim();
   return first || headers.get("x-real-ip") || "unknown";
