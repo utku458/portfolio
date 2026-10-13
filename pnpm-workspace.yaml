@@ -4,3 +4,7 @@ allowBuilds:
   # /_next/image at all.
   sharp: true
   unrs-resolver: false
+
+# GHSA-68fv-2mgg-jv7q: event-loop DoS in source-map-js < 1.2.2, pulled in via next>postcss.
+overrides:
+  source-map-js: ">=1.2.2"
