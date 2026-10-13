@@ -1,0 +1,9 @@
+# RFC 9116. The web-facing half of SECURITY.md: a scanner or a researcher
+# looks here, not in the repository.
+
+Contact: mailto:altinayutku0@gmail.com
+Contact: https://github.com/utku458/portfolio/security/advisories/new
+Expires: 2027-10-13T00:00:00.000Z
+Preferred-Languages: tr, en
+Canonical: https://utkualtinay.com/.well-known/security.txt
+Policy: https://github.com/utku458/portfolio/blob/main/SECURITY.md
