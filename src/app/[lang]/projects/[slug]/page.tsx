@@ -16,7 +16,7 @@ import { StackSummary } from "@/components/sections/stack-summary";
 import { ProjectJsonLd } from "@/components/shared/json-ld";
 import { siteConfig } from "@/config/site";
 import { getProjectBySlug, getProjects, projectSlugs } from "@/data";
-import { getDictionary, getLocale, locales } from "@/i18n";
+import { getDictionary, getLocale, localePath, locales, openGraphLocale } from "@/i18n";
 import { formatDateRange } from "@/lib/format";
 import type { Project } from "@/types";
 
@@ -50,11 +50,19 @@ export async function generateMetadata({
         "x-default": `/en/projects/${project.slug}`,
       },
     },
+    // Replaces the layout's `openGraph` wholesale rather than merging into it,
+    // so the site name and locales the layout sets have to be restated here.
     openGraph: {
       type: "article",
+      siteName: siteConfig.name,
+      locale: openGraphLocale[locale],
+      alternateLocale: locales
+        .filter((other) => other !== locale)
+        .map((other) => openGraphLocale[other]),
       title: `${project.title} — ${siteConfig.name}`,
       description: project.tagline,
       url: path,
+      authors: [localePath(locale, "/")],
     },
   };
 }

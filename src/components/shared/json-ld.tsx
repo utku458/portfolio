@@ -1,6 +1,7 @@
-import { siteConfig } from "@/config/site";
 import { getProfile, getSkills } from "@/data";
 import { getLocale } from "@/i18n";
+import { getSiteCopy } from "@/i18n/content";
+import { buildProfileGraph, buildProjectGraph } from "@/lib/structured-data";
 import type { Project } from "@/types";
 
 /**
@@ -22,65 +23,26 @@ function JsonLd({ data }: { readonly data: unknown }) {
 }
 
 /**
- * Structured data for the person behind the site. This is what lets a search
- * engine answer "who is Utku Altınay" with a knowledge panel rather than a blue
- * link.
+ * The person, the site and the profile page, as one linked graph. This is what
+ * lets a search engine answer "who is Utku Altınay" with a knowledge panel
+ * rather than a blue link, and an LLM cite the site as its source.
  */
 export async function PersonJsonLd() {
   const locale = await getLocale();
-  const profile = getProfile(locale);
 
   return (
     <JsonLd
-      data={{
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: profile.name,
-        jobTitle: profile.title,
-        description: profile.headline,
-        url: `${siteConfig.url}/${locale}`,
-        image: `${siteConfig.url}/${locale}/opengraph-image`,
-        email: `mailto:${profile.contact.email}`,
-        // `workLocation`, not `address`. The distinction is not pedantry: a
-        // `PostalAddress` on a Person invites a home address, and search engines
-        // treat it as one. Where someone works is public information; where they
-        // live is not, and structured data is the last place to blur the two.
-        workLocation: {
-          "@type": "Place",
-          name: profile.contact.location,
-        },
-        sameAs: profile.socials
-          .filter((social) => social.platform !== "email")
-          .map((social) => social.href),
-        alumniOf: profile.education.map((entry) => ({
-          "@type": "CollegeOrUniversity",
-          name: entry.institution,
-        })),
-        knowsAbout: getSkills(locale).map((skill) => skill.name),
-        knowsLanguage: profile.languages.map((language) => language.name),
-      }}
+      data={buildProfileGraph(
+        locale,
+        getProfile(locale),
+        getSkills(locale),
+        getSiteCopy(locale).title,
+      )}
     />
   );
 }
 
-/** Structured data for one case study. */
+/** One case study: the article, the project it describes, and a breadcrumb. */
 export async function ProjectJsonLd({ project }: { readonly project: Project }) {
-  const profile = getProfile(await getLocale());
-
-  return (
-    <JsonLd
-      data={{
-        "@context": "https://schema.org",
-        "@type": "SoftwareSourceCode",
-        name: project.title,
-        description: project.tagline,
-        url: `${siteConfig.url}/projects/${project.slug}`,
-        author: { "@type": "Person", name: profile.name, url: siteConfig.url },
-        programmingLanguage: project.stack
-          .filter((tech) => tech.kind === "language")
-          .map((tech) => tech.name),
-        ...(project.links.github ? { codeRepository: project.links.github } : {}),
-      }}
-    />
-  );
+  return <JsonLd data={buildProjectGraph(await getLocale(), project)} />;
 }

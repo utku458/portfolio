@@ -77,6 +77,9 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: openGraphLocale[locale],
+      alternateLocale: locales
+        .filter((other) => other !== locale)
+        .map((other) => openGraphLocale[other]),
       url: localePath(locale, "/"),
       siteName: siteConfig.name,
       title: copy.title,
