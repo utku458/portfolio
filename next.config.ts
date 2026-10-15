@@ -46,6 +46,11 @@ const nextConfig: NextConfig = {
   /** Says "Next.js" to every scanner for no benefit to anyone. */
   poweredByHeader: false,
 
+  /** The OAuth consent screen of CareerPilot links to the language-neutral address. */
+  async redirects() {
+    return [{ source: "/privacy", destination: "/en/privacy", permanent: false }];
+  },
+
   async headers() {
     return [
       {
