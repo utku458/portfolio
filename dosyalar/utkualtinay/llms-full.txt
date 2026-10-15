@@ -1,0 +1,90 @@
+# Utku Altınay — Full text
+
+> Full-stack developer in İstanbul, Türkiye. Builds multi-platform systems: a C# .NET API at the centre, with native iOS (SwiftUI), Android (Kotlin) and React/Next.js clients around it. Open to full-time roles and selective freelance work.
+
+Last updated: 2026-10-15
+Canonical site: https://utkualtinay.com/en
+Contact: https://utkualtinay.com/en#contact
+
+<!--
+HOW TO MAINTAIN THIS FILE
+- Each "## Project" section below should mirror the matching case study page.
+- Fill every [bracketed] field with real, verifiable facts, or delete the line.
+- Ideally generate this file at build time from the same MDX/JSON source as the pages.
+-->
+
+## About
+
+Utku Altınay is a full-stack developer based in İstanbul. His work centres on a single C# .NET API that serves several native clients: SwiftUI on iOS, Kotlin on Android, and React/Next.js on the web. He is studying Management Information Systems at İstanbul Medipol Üniversitesi and holds an associate degree in Computer Programming from İstanbul Arel Üniversitesi. He speaks Turkish (native), English (professional) and Japanese (elementary).
+
+| Field | Value |
+|---|---|
+| Location | İstanbul, Türkiye (UTC+3) |
+| Availability | Full-time roles; selective freelance |
+| Backend | C# / .NET, ASP.NET Core, EF Core, MediatR, SignalR, Hangfire, Redis, PostgreSQL, MySQL, Python |
+| Frontend | TypeScript, React, Next.js, Tailwind CSS |
+| Mobile | SwiftUI, Kotlin, Android SDK, React Native / Expo |
+| Tooling | Git, Docker, n8n, Supabase, Firebase, Vercel, OpenTelemetry, AWS |
+| GitHub | https://github.com/utku458 |
+| LinkedIn | https://www.linkedin.com/in/utku-alt%C4%B1nay-7620b3336/ |
+
+## Project: Revio
+
+- Case study: https://utkualtinay.com/en/projects/revio
+- Live: https://www.revioapp.com.tr/
+- Timeline: January 2025 – present
+- Summary: Multi-tenant SaaS that lets businesses collect customer feedback when a customer taps an NFC tag.
+- Problem: [What businesses could not do before, with a number if possible]
+- Solution: [Architecture in 3–4 sentences: NFC tag → tenant-scoped URL → .NET API → database → dashboard]
+- Stack: [.NET 8, EF Core, PostgreSQL, Next.js, NFC/NDEF — verify]
+- Results: [Measured outcomes only]
+
+## Project: FitApp
+
+- Case study: https://utkualtinay.com/en/projects/fitapp
+- Timeline: May 2026 – present
+- Summary: One .NET 8 API with SwiftUI, Kotlin and Next.js clients.
+- Problem: [...]
+- Solution: [...]
+- Stack: .NET 8, SwiftUI, Kotlin, Next.js [+ verify]
+- Results: [...]
+
+## Project: ArMenu
+
+- Case study: https://utkualtinay.com/en/projects/armenu
+- Source: https://github.com/utku458/ar-menu
+- Timeline: September 2026 – present
+- Summary: Multi-tenant QR menus with in-browser augmented reality previews.
+- Problem: [...]
+- Solution: [...]
+- Stack: [verify from repository]
+- Results: [...]
+
+## Project: TTRPG Companion
+
+- Case study: https://utkualtinay.com/en/projects/ttrpg-companion
+- Timeline: June 2026 – present
+- Summary: Real-time tabletop campaign companion built with Expo and a .NET 8 SignalR API.
+- Problem: [...]
+- Solution: [...]
+- Stack: Expo (React Native), .NET 8, SignalR [+ verify]
+- Results: [...]
+
+## Project: BT Support (archived)
+
+- Case study: https://utkualtinay.com/en/projects/bt-support
+- Source: https://github.com/utku458/BT-Destek
+- Timeline: September – December 2024
+- Summary: Android app for tracking IT support requests.
+- Stack: Kotlin, Android SDK [+ verify]
+
+## FAQ
+
+### Who is Utku Altınay?
+Utku Altınay is a full-stack developer in İstanbul, Türkiye, who builds multi-platform systems around a C# .NET API with SwiftUI, Kotlin and React/Next.js clients.
+
+### Is Utku Altınay available for work?
+Yes. He is open to full-time full-stack or .NET roles and selective freelance projects. Contact: https://utkualtinay.com/en#contact
+
+### What has Utku Altınay built?
+Revio (NFC customer-feedback SaaS), ArMenu (AR QR menus), FitApp (one .NET API with three native clients), TTRPG Companion (real-time Expo + SignalR app) and BT Support (Android request tracker).

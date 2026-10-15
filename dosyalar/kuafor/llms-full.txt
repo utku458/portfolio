@@ -1,0 +1,73 @@
+# Kuaför Vahide Zafer — Tam metin
+
+> Kuaför Vahide Zafer, İstanbul Fatih'te, Molla Gürani Mahallesi'nde (Fındıkzade) randevuyla çalışan butik bir kadın kuaförüdür. Saç kesimi, saç boyası, röfle, manikür, pedikür, kaş şekillendirme ve bıyık alma hizmetleri sunar.
+
+Son güncelleme: 2026-10-15
+Web sitesi: https://www.kuaforvahidezafer.com.tr/
+
+<!--
+BU DOSYAYI GÜNCEL TUTMA
+- [Köşeli parantez] içindeki her alanı gerçek bilgiyle doldur ya da satırı sil.
+- Adres, telefon ve saatler Google İşletme Profili ile karakter karakter aynı olmalı.
+- Site çok sayfalı hale geldiğinde (/hizmetler/..., /sss) linkleri güncelle.
+-->
+
+## Salon hakkında
+
+Kuaför Vahide Zafer, randevuyla çalışan butik bir kadın kuaförüdür. Her uygulama, müşterinin yüz hatlarına, saç dokusuna ve ten alt tonuna göre planlanır ve her müşteriyle tek tek ilgilenilir. Salonun sahibi ve kuaförü Vahide Zafer'dir. [Kuruluş yılı / deneyim süresi: örn. "Salon YYYY'den beri Fatih'te hizmet veriyor."]
+
+| Bilgi | Değer |
+|---|---|
+| Adres | Molla Gürani Mah., Erseven Sk. No:[KAPI NO], 34093 Fatih/İstanbul |
+| Semt | Fatih, Fındıkzade – Çapa yakını |
+| Telefon / WhatsApp | +90 538 883 72 46 |
+| Randevu | https://wa.me/905388837246 (WhatsApp) veya telefon |
+| Pazartesi–Cuma | 09:00–19:00 |
+| Cumartesi | 09:00–18:00 |
+| Pazar | Kapalı |
+| Ödeme | [Nakit, kredi kartı — doğrula] |
+| Ulaşım | [En yakın tramvay/metro durağı ve yürüme süresi] |
+| Instagram | https://instagram.com/kuaforvahidezafer |
+
+## Hizmetler
+
+### Saç Kesimi
+Yüz hatlarına ve saç dokusuna göre planlanan kesim, ardından fön ve şekillendirme.
+Fiyat: [X TL'den başlar] · Süre: [dk]
+
+### Saç Boyası
+Dip boya veya komple renk değişimi. Ten alt tonuna yakışan renk birlikte seçilir ve saç sağlığı korunarak uygulanır.
+Fiyat: [X TL'den başlar] · Süre: [dk]
+
+### Röfle
+Saça ışık ve hacim veren, doğal geçişli açma çalışmaları. İnce tel röfleden belirgin tonlara kadar uygulanır.
+Fiyat: [X TL'den başlar] · Süre: [dk]
+
+### Manikür
+Tırnak şekillendirme, kütikül bakımı ve oje ile bakımlı, temiz görünen eller.
+Fiyat: [X TL'den başlar] · Süre: [dk]
+
+### Pedikür
+Ayak ve tırnak bakımı, sert deri temizliği ve isteğe bağlı oje.
+Fiyat: [X TL'den başlar] · Süre: [dk]
+
+### Kaş ve Bıyık
+Yüz hatlarına uygun kaş şekillendirme ve bıyık alımı; hızlı, özenli ve hijyenik.
+Fiyat: [X TL'den başlar] · Süre: [dk]
+
+## Sık sorulan sorular
+
+### Kuaför Vahide Zafer nerede?
+İstanbul Fatih'te, Molla Gürani Mahallesi Erseven Sokağı'nda (Fındıkzade). Tam adres: Molla Gürani Mah., Erseven Sk. No:[KAPI NO], 34093 Fatih/İstanbul.
+
+### Kuaför Vahide Zafer hangi günler açık?
+Pazartesi–Cuma 09:00–19:00 ve Cumartesi 09:00–18:00 saatlerinde açıktır. Pazar günü kapalıdır.
+
+### Nasıl randevu alınır?
+WhatsApp (https://wa.me/905388837246) veya telefonla (+90 538 883 72 46) randevu alınır. Salon randevuyla çalışır.
+
+### Hangi hizmetler sunuluyor?
+Saç kesimi, saç boyası (dip boya ve komple boya), röfle, manikür, pedikür, kaş şekillendirme ve bıyık alma.
+
+### Erkek müşterilere hizmet veriliyor mu?
+[Gerçek cevabı yaz. Örn. "Hayır, salon kadın kuaförü olarak hizmet verir." ya da "Evet, erkek saç kesimi de yapılır."]

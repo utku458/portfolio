@@ -1,0 +1,36 @@
+# Utku Altınay
+
+> Utku Altınay is a full-stack developer based in İstanbul, Türkiye. He builds multi-platform systems with a C# .NET API at the centre and native iOS (SwiftUI), Android (Kotlin) and React/Next.js clients around it. He is open to full-time roles and selective freelance work. The site is available in English (/en) and Turkish (/tr).
+
+Key facts:
+- Role: Full-Stack Developer (C# / .NET, TypeScript, React, Next.js, SwiftUI, Kotlin)
+- Location: İstanbul, Türkiye (UTC+3)
+- Education: Management Information Systems, İstanbul Medipol Üniversitesi (ongoing); Associate degree in Computer Programming, İstanbul Arel Üniversitesi
+- Languages: Turkish (native), English (professional), Japanese (elementary)
+- GitHub: https://github.com/utku458
+- LinkedIn: https://www.linkedin.com/in/utku-alt%C4%B1nay-7620b3336/
+
+## Profile
+
+- [Home (English)](https://utkualtinay.com/en): Summary, skills, projects, experience and contact
+- [Home (Turkish)](https://utkualtinay.com/tr): Same content in Turkish
+
+## Case studies
+
+- [Revio](https://utkualtinay.com/en/projects/revio): Multi-tenant SaaS for NFC-based customer feedback (Jan 2025 – present). Live: https://www.revioapp.com.tr/
+- [FitApp](https://utkualtinay.com/en/projects/fitapp): One .NET 8 API serving SwiftUI, Kotlin and Next.js clients (May 2026 – present)
+- [ArMenu](https://utkualtinay.com/en/projects/armenu): Multi-tenant QR menus with in-browser AR (Sep 2026 – present). Source: https://github.com/utku458/ar-menu
+- [TTRPG Companion](https://utkualtinay.com/en/projects/ttrpg-companion): Real-time tabletop campaign companion built with Expo and a .NET 8 SignalR API (Jun 2026 – present)
+- [BT Support](https://utkualtinay.com/en/projects/bt-support): Android request-tracking app (Sep – Dec 2024, archived). Source: https://github.com/utku458/BT-Destek
+
+## Skills
+
+- Backend: C# / .NET, ASP.NET Core, REST API design, EF Core, MediatR, SignalR, Hangfire, Redis, PostgreSQL, MySQL, Python
+- Frontend: TypeScript, React, Next.js, JavaScript, Tailwind CSS
+- Mobile: SwiftUI, Kotlin, Android SDK, React Native / Expo
+- Tooling: Git, Docker, n8n, Supabase, Firebase, Vercel, OpenTelemetry, AWS
+
+## Optional
+
+- [Full text for LLMs](https://utkualtinay.com/llms-full.txt): All case studies as plain Markdown
+- [Sitemap](https://utkualtinay.com/sitemap.xml)

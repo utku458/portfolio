@@ -1,0 +1,31 @@
+# Kuaför Vahide Zafer
+
+> Kuaför Vahide Zafer, İstanbul Fatih'te, Molla Gürani Mahallesi'nde (Fındıkzade) randevuyla çalışan butik bir kadın kuaförüdür. Saç kesimi, saç boyası, röfle, manikür, pedikür, kaş şekillendirme ve bıyık alma hizmetleri sunar. Randevu WhatsApp veya telefonla alınır.
+
+Temel bilgiler:
+- İşletme türü: Kadın kuaförü / güzellik salonu (randevuyla çalışır)
+- Adres: Molla Gürani Mah., Erseven Sk. No:[KAPI NO], 34093 Fatih/İstanbul
+- Telefon / WhatsApp: +90 538 883 72 46
+- WhatsApp randevu: https://wa.me/905388837246
+- Çalışma saatleri: Pazartesi–Cuma 09:00–19:00, Cumartesi 09:00–18:00, Pazar kapalı
+- Instagram: https://instagram.com/kuaforvahidezafer
+- Google Haritalar: https://share.google/Zn8GbEOzzOEqQccXw
+
+## Sayfalar
+
+- [Ana sayfa](https://www.kuaforvahidezafer.com.tr/): Salon tanıtımı, hizmetler, adres, çalışma saatleri ve randevu
+- [Hizmetler](https://www.kuaforvahidezafer.com.tr/#hizmetler): Altı hizmet alanının açıklamaları
+- [İletişim](https://www.kuaforvahidezafer.com.tr/#iletisim): Adres, saatler, telefon ve yol tarifi
+
+## Hizmetler
+
+- Saç Kesimi: Yüz hatlarına ve saç dokusuna göre planlanan kesim, ardından fön ve şekillendirme. Fiyat: [X TL'den]
+- Saç Boyası: Dip boya veya komple renk değişimi; ten alt tonuna göre ton seçimi. Fiyat: [X TL'den]
+- Röfle: Saça ışık ve hacim veren, doğal geçişli açma çalışmaları. Fiyat: [X TL'den]
+- Manikür: Tırnak şekillendirme, kütikül bakımı ve oje. Fiyat: [X TL'den]
+- Pedikür: Ayak ve tırnak bakımı, sert deri temizliği, isteğe bağlı oje. Fiyat: [X TL'den]
+- Kaş ve Bıyık: Yüz hatlarına uygun kaş şekillendirme ve bıyık alımı. Fiyat: [X TL'den]
+
+## Optional
+
+- [Tam metin](https://www.kuaforvahidezafer.com.tr/llms-full.txt): Hizmet detayları ve sık sorulan sorular
