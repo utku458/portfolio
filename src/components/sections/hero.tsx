@@ -2,6 +2,7 @@ import { ArrowRight, Download } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { GlanceGrid } from "@/components/sections/glance-grid";
+import { HeroPortrait } from "@/components/sections/hero-portrait";
 import { HeroBackground } from "@/components/sections/hero-background";
 import { SocialLinks } from "@/components/shared/social-links";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,11 @@ import { getDictionary, getLocale } from "@/i18n";
  * The introduction is held to `--measure-prose` while the bento below runs the
  * full container width. That contrast — a narrow column of text against a wide
  * grid — is what stops a page of full-width paragraphs from reading as a wall.
+ *
+ * The portrait is the second column only from `lg` up, where the prose has
+ * stopped growing and the rest of the line is empty. Below that it stacks,
+ * because a photograph wedged beside a 40-character measure is worse than no
+ * photograph. Text comes first in the DOM either way: it carries the <h1>.
  */
 export async function Hero() {
   const locale = await getLocale();
@@ -27,7 +33,8 @@ export async function Hero() {
       <HeroBackground />
 
       <Container>
-        <div className="max-w-(--measure-prose)">
+        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20">
+          <div className="max-w-(--measure-prose)">
           <p className="inline-flex animate-fade-up items-center gap-2.5 rounded-full border border-border bg-card/70 py-1.5 pl-3 pr-4 text-xs font-medium backdrop-blur-sm">
             <span className="relative flex size-2">
               <span
@@ -83,6 +90,9 @@ export async function Hero() {
             <span aria-hidden className="text-primary">&rarr;</span>
             <span lang="en">MySQL</span>
           </p>
+          </div>
+
+          <HeroPortrait alt={dict.hero.portraitAlt} location={profile.contact.location} />
         </div>
 
         <div className="mt-16 sm:mt-20">

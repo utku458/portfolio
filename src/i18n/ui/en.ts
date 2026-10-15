@@ -43,6 +43,7 @@ export const en = {
       "not-looking": "Not currently looking",
     },
     viewProjects: "View projects",
+    portraitAlt: "Utku Altınay, photographed at night on a rooftop above the Golden Horn in İstanbul.",
   },
   glance: {
     availabilityNote: {

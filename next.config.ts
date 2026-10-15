@@ -17,9 +17,21 @@ import type { NextConfig } from "next";
  * blocks a script loaded from any other origin, and `object-src 'none'` plus
  * `base-uri 'self'` close the two classic rewrite tricks.
  */
+/**
+ * React's development build uses `eval()` to rebuild stack traces across
+ * environments — it says so itself when the policy blocks it, and it says it
+ * never does this in production. Without this the dev server throws on every
+ * page load. The allowance is keyed on NODE_ENV, so it cannot reach the image:
+ * `next build` runs with NODE_ENV=production.
+ */
+const scriptSrc =
+  process.env.NODE_ENV === "development"
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    : "script-src 'self' 'unsafe-inline'";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
