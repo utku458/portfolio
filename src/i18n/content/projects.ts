@@ -169,9 +169,19 @@ const TR: Record<ProjectSlug, ProjectCopy> = {
         caption: "Üç adım, sıfır kurulum — ürünün tamamı tek ekranda.",
       },
       {
+        alt: "İşletmecinin gelen bir puanla ne yaptığını anlatan dört kart.",
+        caption:
+          "Tek başına bir puan hiçbir şeyi değiştirmez. Ürün, işletmecinin o puanla ne yaptığıdır.",
+      },
+      {
         alt: "Google Business Profile bölümü; yalnızca okuma erişimini ve geri alınabilir yetkiyi anlatıyor.",
         caption:
           "Google yorumları da aynı panele düşüyor — yalnızca okuma, ve Google'ın kendi ayarlarından geri alınabilir.",
+      },
+      {
+        alt: "Veri koruma kartı: IP adresleri hiçbir zaman açık hâliyle saklanmıyor.",
+        caption:
+          "Müşteri IP'leri hiçbir zaman açık hâliyle saklanmıyor, iletişim bilgisi isteğe bağlı ve hiçbir veri satılmıyor — bir politikanın içine gömmek yerine sayfanın kendisinde yazıyor.",
       },
     ],
   },

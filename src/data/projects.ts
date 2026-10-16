@@ -241,12 +241,28 @@ const projectsData = [
         caption: "Three steps, no setup — the whole product in one screen.",
       },
       {
+        src: "/images/projects/revio-actions.webp",
+        alt: "Four cards describing what an owner does with a rating once it arrives.",
+        width: 1440,
+        height: 490,
+        caption:
+          "A score on its own changes nothing. The product is what the owner does with it next.",
+      },
+      {
         src: "/images/projects/revio-google.webp",
         alt: "The Google Business Profile section explaining read-only access and revocable permission.",
         width: 1440,
         height: 515,
         caption:
           "Google reviews land in the same panel — read-only, and revocable from Google's own settings.",
+      },
+      {
+        src: "/images/projects/revio-privacy.webp",
+        alt: "The data-protection card: IP addresses are never stored in the clear.",
+        width: 1440,
+        height: 280,
+        caption:
+          "Customer IPs are never stored in the clear, contact details are optional, and nothing is sold on — stated on the page rather than buried in a policy.",
       },
     ],
   },
