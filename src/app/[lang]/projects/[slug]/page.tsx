@@ -151,9 +151,25 @@ export default async function ProjectCaseStudy({
         </header>
 
         {project.cover && (
-          <figure className="mt-12 overflow-hidden rounded-2xl border border-border bg-card">
+          /*
+            The box is derived from the file, not chosen. Half the source width
+            is the widest this can be drawn before a retina display starts
+            asking for pixels that were never captured — which is exactly what
+            made these covers look sharp on a phone and mushy on a laptop.
+
+            It also means a better screenshot is the only thing needed to make
+            a cover bigger: re-shoot it, and the layout follows on its own.
+          */
+          <figure
+            style={{ maxWidth: `${project.cover.width / 2}px` }}
+            className="mx-auto mt-12 overflow-hidden rounded-2xl border border-border bg-card"
+          >
             <div className="aspect-16/10">
-              <ProjectCover cover={project.cover} priority />
+              <ProjectCover
+                cover={project.cover}
+                priority
+                sizes={`(min-width: 1024px) ${project.cover.width / 2}px, 100vw`}
+              />
             </div>
           </figure>
         )}
