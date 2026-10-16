@@ -97,18 +97,18 @@ export function HeroPortraitField({ children }: { readonly children: ReactNode }
   }, [lightX, lightY, nearness, offsetX, offsetY, prefersReducedMotion]);
 
   return (
-    // Deliberately modest in size: the hero's subject is the name and the
-    // sentence under it, and a portrait scaled to compete with them turns the
-    // page into a profile picture with some text beside it.
+    // Sized like an avatar, not like a subject. The hero's subject is the name
+    // and the sentence under it; anything here large enough to compete with
+    // them turns the page into a profile picture with some text beside it.
     <div
       ref={fieldRef}
-      className="pointer-events-none relative mx-auto flex w-full max-w-52 animate-fade-up justify-center [animation-delay:360ms] sm:max-w-60 lg:mx-0 lg:max-w-72"
+      className="pointer-events-none relative mx-auto aspect-square w-36 animate-fade-up [animation-delay:360ms] sm:w-40 lg:mx-0 lg:w-44"
     >
-      {/* The wash the figure stands in, drifting against him. */}
+      {/* The wash it sits in, drifting against the disc. */}
       <motion.div
         aria-hidden
         style={{ x: poolX, y: poolY }}
-        className="absolute left-1/2 top-[46%] -z-10 aspect-square w-[150%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,var(--portrait-pool),transparent_72%)]"
+        className="absolute left-1/2 top-1/2 -z-10 aspect-square w-[190%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,var(--portrait-pool),transparent_70%)]"
       />
 
       {/*
@@ -122,19 +122,19 @@ export function HeroPortraitField({ children }: { readonly children: ReactNode }
           maskImage: spotlight,
           WebkitMaskImage: spotlight,
           backgroundImage:
-            "radial-gradient(circle, color-mix(in oklch, var(--color-primary) 60%, transparent) 1px, transparent 1px)",
-          backgroundSize: "22px 22px",
+            "radial-gradient(circle, color-mix(in oklch, var(--color-primary) 55%, transparent) 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
         }}
-        className="absolute inset-x-[-28%] inset-y-[-14%] -z-10"
+        className="absolute inset-[-60%] -z-10"
       />
 
-      {/* One ring, so the figure has a place rather than only an absence. */}
+      {/* A ring the disc sits inside, so it is placed rather than floating. */}
       <div
         aria-hidden
-        className="absolute left-1/2 top-[44%] -z-10 aspect-square w-[122%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20 [mask-image:linear-gradient(to_bottom,black_32%,transparent_84%)]"
+        className="absolute left-1/2 top-1/2 -z-10 aspect-square w-[132%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/15"
       />
 
-      <motion.div style={{ x: figureX, y: figureY }} className="relative w-full">
+      <motion.div style={{ x: figureX, y: figureY }} className="relative size-full">
         {children}
       </motion.div>
     </div>
