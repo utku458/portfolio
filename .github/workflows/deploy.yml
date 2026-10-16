@@ -44,15 +44,24 @@ jobs:
             exit 1
           fi
 
-          # --fail-with-body so a 401 or 404 ends the job instead of passing
-          # silently, while still printing what Coolify said about it.
+          # POST, not GET: current Coolify maps `GET /api/v1/deploy` to a
+          # "POST required" handler that answers 405 even with a valid token.
+          #
+          # --fail-with-body so a 401 or 405 ends the job instead of passing
+          # silently. `set -e` would exit before the body is printed, so the
+          # failure branch prints what Coolify said about it explicitly.
           http_status=$(
             curl --silent --show-error --fail-with-body \
+                 --request POST \
                  --retry 3 --retry-connrefused --max-time 30 \
                  --output response.json --write-out '%{http_code}' \
                  --header "Authorization: Bearer ${DEPLOY_TOKEN}" \
                  "${DEPLOY_URL}"
-          )
+          ) || {
+            echo "::error::Coolify rejected the deploy request:"
+            cat response.json 2>/dev/null || true
+            exit 1
+          }
 
           echo "Coolify responded ${http_status}:"
           cat response.json
