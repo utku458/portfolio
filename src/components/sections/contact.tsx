@@ -38,6 +38,7 @@ export async function Contact() {
                 <CopyButton
                   value={profile.contact.email}
                   label={dict.contact.copyEmail}
+                  copiedLabel={dict.contact.copied}
                 />
               </div>
             </div>

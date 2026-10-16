@@ -12,9 +12,12 @@ import { Button } from "@/components/ui/button";
 export function CopyButton({
   value,
   label,
+  copiedLabel,
 }: {
   readonly value: string;
   readonly label: string;
+  /** Passed in rather than written here: this renders on a Turkish page too. */
+  readonly copiedLabel: string;
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -33,8 +36,8 @@ export function CopyButton({
       variant="ghost"
       size="icon"
       onClick={copy}
-      aria-label={copied ? "Copied" : label}
-      title={copied ? "Copied" : label}
+      aria-label={copied ? copiedLabel : label}
+      title={copied ? copiedLabel : label}
     >
       {copied ? (
         <Check aria-hidden className="size-4 text-emerald-500" />

@@ -42,7 +42,9 @@ const PROFILE_COPY: Record<Locale, ProfileCopy> = {
     socialLabel: {
       github: "GitHub profile",
       linkedin: "LinkedIn profile",
-      email: "Send an email",
+      // "Send an email" would be a promise this link no longer keeps: it goes
+      // to the contact section rather than opening a mail client.
+      email: "Get in touch",
     },
     languageName: {
       turkish: "Turkish",
@@ -85,7 +87,7 @@ const PROFILE_COPY: Record<Locale, ProfileCopy> = {
     socialLabel: {
       github: "GitHub profili",
       linkedin: "LinkedIn profili",
-      email: "E-posta gönder",
+      email: "İletişime geç",
     },
     languageName: {
       turkish: "Türkçe",

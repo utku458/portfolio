@@ -35,7 +35,13 @@ const profileFacts = {
     },
     {
       platform: "email",
-      href: "mailto:altinayutku0@gmail.com",
+      // Not `mailto:`. A mailto link only does something when the visitor's
+      // device has a mail client registered for the protocol; on a work laptop
+      // that uses webmail, clicking it is silently nothing — the icon looks
+      // broken. This points at the contact section instead, which offers the
+      // address, a copy button, a real mailto link and the form, all of which
+      // work everywhere. `handle` stays the address: it is what gets shown.
+      href: "#contact",
       handle: "altinayutku0@gmail.com",
     },
   ],
