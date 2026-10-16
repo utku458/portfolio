@@ -11,6 +11,19 @@ import type { ReactNode } from "react";
  * `reducedMotion="user"` makes every Framer Motion animation in the app obey
  * the OS setting automatically — the alternative is remembering to check it in
  * each component, which nobody does.
+ *
+ * Dev-console note, so nobody chases it twice: React logs "Encountered a script
+ * tag while rendering React component" pointing at the `ThemeProvider` below.
+ * The script is next-themes' own — it renders one unconditionally (the memoised
+ * `script` with `dangerouslySetInnerHTML` in `next-themes/dist/index.js`) and
+ * 0.4.6 is the latest published version, so no upgrade removes it and there is
+ * nothing to change here.
+ *
+ * It is noise rather than a defect. That warning string exists only in React's
+ * `*.development.js` builds and is stripped from production, and the script is
+ * present in the server-rendered HTML — the only place it has to run, and
+ * exactly what prevents the flash of the wrong theme. On a later client render
+ * it is inert, which is all React is pointing out.
  */
 export function Providers({ children }: { readonly children: ReactNode }) {
   return (

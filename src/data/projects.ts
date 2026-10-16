@@ -223,25 +223,28 @@ const projectsData = [
       demo: "https://www.revioapp.com.tr/",
       // No `github`: the repository is private.
     },
+    // Re-shot from the live site at 2x device scale. Revio is the only project
+    // whose screenshots can be retaken without credentials — it is public — so
+    // it is the only one carrying enough pixels for a retina display.
     cover: {
-      src: "/images/projects/revio.jpg",
+      src: "/images/projects/revio.webp",
       alt: "The Revio landing page: 'Find out what your customer thinks before they leave the table'.",
-      width: 800,
-      height: 503,
+      width: 1920,
+      height: 1200,
     },
     gallery: [
       {
-        src: "/images/projects/revio-steps.jpg",
+        src: "/images/projects/revio-steps.webp",
         alt: "Three steps: the customer taps the card, rates the visit, the owner watches the panel.",
-        width: 800,
-        height: 500,
+        width: 1440,
+        height: 440,
         caption: "Three steps, no setup — the whole product in one screen.",
       },
       {
-        src: "/images/projects/revio-google.jpg",
+        src: "/images/projects/revio-google.webp",
         alt: "The Google Business Profile section explaining read-only access and revocable permission.",
-        width: 800,
-        height: 500,
+        width: 1440,
+        height: 515,
         caption:
           "Google reviews land in the same panel — read-only, and revocable from Google's own settings.",
       },
