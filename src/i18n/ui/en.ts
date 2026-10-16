@@ -43,7 +43,8 @@ export const en = {
       "not-looking": "Not currently looking",
     },
     viewProjects: "View projects",
-    portraitAlt: "Utku Altınay, standing in a dark suit, cut out from the photograph's background.",
+    portraitAlt:
+      "Utku Altınay from the chest up, in a dark suit and tie, cut out from the photograph's background.",
   },
   glance: {
     availabilityNote: {
