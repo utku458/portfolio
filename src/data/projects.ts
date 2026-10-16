@@ -368,33 +368,45 @@ const projectsData = [
       github: "https://github.com/utku458/ar-menu",
       demo: "https://armenu-guest.46.225.37.55.sslip.io/",
     },
+    // Re-shot at 2x against the repository's own development seed — two demo
+    // restaurants it creates on first run — rather than against the deployed
+    // instance, which has no menus in it. Phone surfaces are captured at a
+    // phone, which is the only place a QR code on a table ever gets scanned.
     cover: {
-      src: "/images/projects/armenu.jpg",
-      alt: "The ArMenu owner dashboard beside the guest app showing a burger in 3D with an AR button.",
-      width: 800,
-      height: 500,
+      src: "/images/projects/armenu.webp",
+      alt: "The menu editor: categories on the left, dishes with drag handles and publish toggles on the right.",
+      width: 1920,
+      height: 1200,
     },
     gallery: [
       {
-        src: "/images/projects/armenu-guest-menu.jpg",
-        alt: "The guest menu on a phone: search, filters, categories and a dish carrying a 3D badge.",
-        width: 750,
-        height: 1624,
+        src: "/images/projects/armenu-3d.webp",
+        alt: "A dish opened on a phone, rendered in 3D, above its allergen notice and price.",
+        width: 820,
+        height: 1777,
+        caption:
+          "The one thing a printed menu cannot do. The 3D stack loads only when a dish that has a model is opened, so guests who never use it never pay for it.",
+      },
+      {
+        src: "/images/projects/armenu-menu-tr.webp",
+        alt: "The guest menu on a phone in Turkish: search, allergen filters, categories and a 3D badge.",
+        width: 820,
+        height: 1777,
         caption: "What the guest sees after scanning the QR code on the table.",
       },
       {
-        src: "/images/projects/armenu-guest-ar.jpg",
-        alt: "A dish opened on a phone, rendered in 3D, with a 'See it on your table' button.",
-        width: 750,
-        height: 1624,
+        src: "/images/projects/armenu-menu-en.webp",
+        alt: "The same menu in English, with each dish name and description translated.",
+        width: 820,
+        height: 1777,
         caption:
-          "The 3D stack loads only when a dish with a model is opened — guests who never use AR never pay for it.",
+          "The same menu, one tap later. Translations are stored per dish, not generated over a single language.",
       },
       {
-        src: "/images/projects/armenu-dashboard-qr.jpg",
-        alt: "The dashboard's QR screen with a menu link, SVG and PNG downloads and printable per-table cards.",
-        width: 800,
-        height: 500,
+        src: "/images/projects/armenu-qr.webp",
+        alt: "The QR screen: the menu code, a language choice, SVG and PNG downloads and printable table cards.",
+        width: 1440,
+        height: 900,
         caption: "Per-table QR cards, printed from the dashboard — the table number travels with the scan.",
       },
     ],

@@ -250,20 +250,25 @@ const TR: Record<ProjectSlug, ProjectCopy> = {
       { label: "Talep üzerine yüklenen 3B yığını (gzip)" },
     ],
     cover: {
-      alt: "ArMenu işletme paneli ile yanında 3B burger ve AR butonu gösteren misafir uygulaması.",
+      alt: "Menü editörü: solda kategoriler, sağda sürükleme tutamaçları ve yayın anahtarlarıyla ürünler.",
     },
     gallery: [
       {
-        alt: "Telefonda misafir menüsü: arama, filtreler, kategoriler ve 3B rozeti taşıyan bir yemek.",
+        alt: "Telefonda açılmış bir yemek, 3B olarak işlenmiş; altında alerjen uyarısı ve fiyat.",
+        caption:
+          "Basılı bir menünün yapamadığı tek şey. 3B yığını yalnızca modeli olan bir yemek açıldığında yükleniyor; böylece hiç kullanmayan misafirler bedelini hiç ödemiyor.",
+      },
+      {
+        alt: "Telefonda Türkçe misafir menüsü: arama, alerjen filtreleri, kategoriler ve 3B rozeti.",
         caption: "Masadaki QR kodu okuttuktan sonra misafirin gördüğü ekran.",
       },
       {
-        alt: "Telefonda açılmış bir yemek, 3B olarak işlenmiş, \"Masanda gör\" butonuyla.",
+        alt: "Aynı menü İngilizce; her yemek adı ve açıklaması çevrilmiş.",
         caption:
-          "3B yığını yalnızca modeli olan bir yemek açıldığında yükleniyor — AR'ı hiç kullanmayan misafirler bedelini hiç ödemiyor.",
+          "Aynı menü, bir dokunuş sonrası. Çeviriler yemek başına saklanıyor; tek bir dilin üzerine sonradan üretilmiyor.",
       },
       {
-        alt: "Panelin QR ekranı: menü bağlantısı, SVG ve PNG indirmeleri ve masa başına basılabilir kartlar.",
+        alt: "QR ekranı: menü kodu, dil seçimi, SVG ve PNG indirmeleri ve basılabilir masa kartları.",
         caption: "Panelden basılan masa başına QR kartları — masa numarası okutmayla birlikte geliyor.",
       },
     ],
