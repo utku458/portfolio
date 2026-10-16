@@ -1,63 +1,55 @@
-import { MapPin } from "lucide-react";
 import Image from "next/image";
 
 interface HeroPortraitProps {
   /** Describes the photograph to someone who cannot see it. */
   readonly alt: string;
-  /** The same string the contact section shows, so the two never disagree. */
-  readonly location: string;
 }
 
-/** Intrinsic size of the file, so the browser reserves the box and CLS stays 0. */
-const PORTRAIT = { src: "/images/utku-altinay.jpg", width: 800, height: 1000 } as const;
+/** Intrinsic size of the cut-out, so the browser reserves the box (CLS stays 0). */
+const PORTRAIT = { src: "/images/utku-altinay.webp", width: 572, height: 1157 } as const;
 
 /**
- * The hero's second column.
+ * The hero's second column: the subject, with no frame around him.
  *
- * The caption is the reason the photograph earns its place rather than merely
- * filling it: the backdrop is the Golden Horn, and naming the city turns a
- * decorative portrait into the same fact the contact section states in words.
- * It reads the location from the profile rather than hard-coding "İstanbul",
- * so a move updates both places at once.
+ * A photograph in a rounded rectangle with a border is the one treatment every
+ * template already ships. The background is cut away instead — macOS Vision's
+ * subject mask, baked into the asset rather than run in the browser — so the
+ * figure stands on the page itself and the hero's grid shows through behind him.
  *
- * `priority` because on a wide screen this sits above the fold beside the
- * <h1> — without it the optimizer defers the one image a visitor sees first.
+ * What makes that work is the pool. The photograph was taken at night with rim
+ * light on the hair and shoulders, and a lit edge only reads as deliberate
+ * against something dark; on bare white it looks like a bad cut. So the figure
+ * carries its own darkness, sized larger than he is and fading to nothing, and
+ * the themes use it differently: a vignette he emerges from in the light theme,
+ * a faint glow that lifts him off the background in the dark one. The colour is
+ * the `--portrait-pool` token, not a value typed in here.
+ *
+ * The lower edge is masked rather than cropped. The subject mask ends where the
+ * original frame ended — mid-thigh — and a straight horizontal line across a
+ * body is the one thing that gives a cut-out away instantly. Fading the last
+ * third to nothing lets him dissolve into the page instead, which is also why
+ * the figure can sit low in the hero without needing a floor to stand on.
+ *
+ * `priority` because on a wide screen this is beside the <h1>, which is the LCP
+ * element — the optimizer should not defer what a visitor sees first.
  */
-export function HeroPortrait({ alt, location }: HeroPortraitProps) {
+export function HeroPortrait({ alt }: HeroPortraitProps) {
   return (
-    <div className="relative mx-auto w-full max-w-64 animate-fade-up [animation-delay:360ms] lg:mx-0 lg:max-w-sm">
-      {/*
-        A soft wash of the brand hue behind the frame. Decorative, so it is
-        hidden from assistive technology and sits on its own layer rather than
-        being a thicker border — the point is that the photograph reads as lit
-        from behind, not as a heavier edge.
-      */}
+    <div className="pointer-events-none relative mx-auto flex w-full max-w-60 animate-fade-up justify-center [animation-delay:360ms] sm:max-w-72 lg:mx-0 lg:max-w-sm">
       <div
         aria-hidden
-        className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-primary/10 blur-3xl"
+        className="absolute left-1/2 top-[44%] -z-10 aspect-square w-[165%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,var(--portrait-pool),transparent_72%)]"
       />
 
-      <figure className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-primary/5">
-        <Image
-          src={PORTRAIT.src}
-          alt={alt}
-          width={PORTRAIT.width}
-          height={PORTRAIT.height}
-          priority
-          sizes="(min-width: 1024px) 24rem, 16rem"
-          className="h-full w-full object-cover"
-        />
-
-        {/*
-          The gradient is what makes the caption legible: this is a night shot,
-          but the water along the lower edge is bright and uneven, so white text
-          alone would sit on an unpredictable background.
-        */}
-        <figcaption className="absolute inset-x-0 bottom-0 flex items-center gap-1.5 bg-linear-to-t from-black/75 via-black/40 to-transparent px-4 pb-3.5 pt-12 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-white">
-          <MapPin aria-hidden className="size-3.5 shrink-0" />
-          {location}
-        </figcaption>
-      </figure>
+      <Image
+        src={PORTRAIT.src}
+        alt={alt}
+        width={PORTRAIT.width}
+        height={PORTRAIT.height}
+        priority
+        sizes="(min-width: 1024px) 24rem, (min-width: 640px) 18rem, 15rem"
+        className="relative h-auto w-full select-none [mask-image:linear-gradient(to_bottom,black_58%,transparent_96%)]"
+      />
     </div>
   );
 }

@@ -92,7 +92,7 @@ export async function Hero() {
           </p>
           </div>
 
-          <HeroPortrait alt={dict.hero.portraitAlt} location={profile.contact.location} />
+          <HeroPortrait alt={dict.hero.portraitAlt} />
         </div>
 
         <div className="mt-16 sm:mt-20">
