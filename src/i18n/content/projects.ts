@@ -161,22 +161,27 @@ const TR: Record<ProjectSlug, ProjectCopy> = {
     ],
     metrics: [{ label: "Otomatik test" }, { label: "Domain katmanının paket bağımlılığı" }],
     cover: {
-      alt: "Revio ana sayfası: \"Müşterinizin ne düşündüğünü, masadan kalkmadan öğrenin.\"",
+      alt: "İşletme paneli: kartlar, geri bildirimler, bekleyenler ve ne kadarının ele alındığı.",
     },
     gallery: [
       {
+        alt: "Müşterinin kartı okutunca gördüğü ekran: beş yıldız ve tek bir soru.",
+        caption:
+          "Her şey burada başlıyor. Tek soru, beş yıldız, uygulama yok, hesap yok — verinin var olma sebebi bu ekran.",
+      },
+      {
+        alt: "Analitik sayfası: güçlü ve gelişebilir yönler, Google puanı ve okuma→yorum dönüşümü.",
+        caption:
+          "Puanların eyleme dönüştüğü yer — insanların size özel söyledikleriyle Google'a yazdıkları arasındaki fark dahil.",
+      },
+      {
+        alt: "Geri bildirim listesi: düşük puanlar, müşterinin bıraktığı not ve ele alındı işareti.",
+        caption:
+          "Düşük puanın arkasındaki gerekçe. Sayı işletmeciye bir şeylerin ters gittiğini söyler; bu ekran ne olduğunu söyler.",
+      },
+      {
         alt: "Üç adım: müşteri kartı okutur, ziyareti puanlar, işletmeci panelden izler.",
         caption: "Üç adım, sıfır kurulum — ürünün tamamı tek ekranda.",
-      },
-      {
-        alt: "İşletmecinin gelen bir puanla ne yaptığını anlatan dört kart.",
-        caption:
-          "Tek başına bir puan hiçbir şeyi değiştirmez. Ürün, işletmecinin o puanla ne yaptığıdır.",
-      },
-      {
-        alt: "Google Business Profile bölümü; yalnızca okuma erişimini ve geri alınabilir yetkiyi anlatıyor.",
-        caption:
-          "Google yorumları da aynı panele düşüyor — yalnızca okuma, ve Google'ın kendi ayarlarından geri alınabilir.",
       },
       {
         alt: "Veri koruma kartı: IP adresleri hiçbir zaman açık hâliyle saklanmıyor.",

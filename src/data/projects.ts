@@ -223,38 +223,49 @@ const projectsData = [
       demo: "https://www.revioapp.com.tr/",
       // No `github`: the repository is private.
     },
-    // Re-shot from the live site at 2x device scale. Revio is the only project
-    // whose screenshots can be retaken without credentials — it is public — so
-    // it is the only one carrying enough pixels for a retina display.
+    // The product, not the website that sells it. Shot at 2x against a locally
+    // seeded demo tenant: the live panel belongs to a real salon, and its
+    // feedback list is real named complaints about a real named person, which
+    // is not something a portfolio gets to publish. The demo tenant ships with
+    // the product — it is what the sales flow uses — so these are the screens
+    // as built, with none of anyone's data in them.
     cover: {
       src: "/images/projects/revio.webp",
-      alt: "The Revio landing page: 'Find out what your customer thinks before they leave the table'.",
+      alt: "The owner's panel: cards, feedback, pending items and how much of it has been handled.",
       width: 1920,
       height: 1200,
     },
     gallery: [
+      {
+        src: "/images/projects/revio-musteri.webp",
+        alt: "The screen a customer sees after tapping the card: five stars and one question.",
+        width: 820,
+        height: 1165,
+        caption:
+          "Everything starts here. One question, five stars, no app and no account — the whole reason the data exists.",
+      },
+      {
+        src: "/images/projects/revio-analitik.webp",
+        alt: "The analytics page: strengths, weaknesses, Google score and the scan-to-review rate.",
+        width: 1440,
+        height: 900,
+        caption:
+          "Where the scores turn into something to act on — including the gap between what people say in private and what they post on Google.",
+      },
+      {
+        src: "/images/projects/revio-geribildirim.webp",
+        alt: "The feedback list: low scores with the note the customer left, and a handled toggle.",
+        width: 1440,
+        height: 900,
+        caption:
+          "The reason behind a low score. A number tells an owner something went wrong; this tells them what.",
+      },
       {
         src: "/images/projects/revio-steps.webp",
         alt: "Three steps: the customer taps the card, rates the visit, the owner watches the panel.",
         width: 1440,
         height: 440,
         caption: "Three steps, no setup — the whole product in one screen.",
-      },
-      {
-        src: "/images/projects/revio-actions.webp",
-        alt: "Four cards describing what an owner does with a rating once it arrives.",
-        width: 1440,
-        height: 490,
-        caption:
-          "A score on its own changes nothing. The product is what the owner does with it next.",
-      },
-      {
-        src: "/images/projects/revio-google.webp",
-        alt: "The Google Business Profile section explaining read-only access and revocable permission.",
-        width: 1440,
-        height: 515,
-        caption:
-          "Google reviews land in the same panel — read-only, and revocable from Google's own settings.",
       },
       {
         src: "/images/projects/revio-privacy.webp",
