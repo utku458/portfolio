@@ -18,13 +18,19 @@ const PORTRAIT = profileFacts.portrait;
  * subject mask, baked into the asset rather than run in the browser — so the
  * figure stands on the page itself and the hero's grid shows through behind him.
  *
- * What makes that work is the pool. The photograph was taken at night with rim
- * light on the hair and shoulders, and a lit edge only reads as deliberate
- * against something dark; on bare white it looks like a bad cut. So the figure
- * carries its own darkness, sized larger than he is and fading to nothing, and
- * the themes use it differently: a vignette he emerges from in the light theme,
- * a faint glow that lifts him off the background in the dark one. The colour is
- * the `--portrait-pool` token, not a value typed in here.
+ * What makes that work is the pool: the figure carries its own light, sized
+ * larger than he is and fading to nothing. The themes use it differently — a
+ * vignette he emerges from in the light theme, a glow that lifts him off the
+ * background in the dark one. The colour is the `--portrait-pool` token, not a
+ * value typed in here.
+ *
+ * The dark theme also needs a rim. The suit is near-black and the page is dark,
+ * so without one the shoulders simply dissolve and only a face and a shirt are
+ * left floating. A `drop-shadow` follows the alpha outline exactly, which makes
+ * it a rim light rather than a box shadow — the separation a studio photograph
+ * shot on white never had to provide for itself. The light theme inverts it:
+ * there the suit is already the darkest thing on the page, so a faint dark
+ * shadow grounds it instead of outlining it.
  *
  * The lower edge is masked rather than cropped. The subject mask ends where the
  * original frame ended — mid-thigh — and a straight horizontal line across a
@@ -73,7 +79,7 @@ export function HeroPortrait({ alt }: HeroPortraitProps) {
         height={PORTRAIT.height}
         priority
         sizes="(min-width: 1024px) 24rem, (min-width: 640px) 18rem, 15rem"
-        className="relative h-auto w-full select-none opacity-90 mix-blend-luminosity [mask-image:linear-gradient(to_bottom,black_58%,transparent_96%)] dark:opacity-95 dark:mix-blend-normal"
+        className="relative h-auto w-full select-none opacity-95 [filter:drop-shadow(0_18px_28px_color-mix(in_oklch,var(--color-foreground)_18%,transparent))] [mask-image:linear-gradient(to_bottom,black_72%,transparent_99%)] dark:opacity-100 dark:[filter:drop-shadow(0_0_1px_color-mix(in_oklch,var(--color-foreground)_55%,transparent))_drop-shadow(0_0_22px_color-mix(in_oklch,var(--color-primary)_38%,transparent))]"
       />
     </div>
   );

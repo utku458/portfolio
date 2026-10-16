@@ -40,7 +40,7 @@ export const tr: Dictionary = {
       "not-looking": "Şu an arayışta değilim",
     },
     viewProjects: "Projelere bak",
-    portraitAlt: "Utku Altınay'ın arka planı kaldırılmış, sayfanın üzerinde duran fotoğrafı.",
+    portraitAlt: "Koyu takım elbiseli Utku Altınay'ın, arka planı kaldırılmış fotoğrafı.",
   },
   glance: {
     availabilityNote: {

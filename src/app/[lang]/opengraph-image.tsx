@@ -72,7 +72,7 @@ export default async function OpengraphImage({
         */}
         <img
           src={portrait}
-          width={524}
+          width={511}
           height={560}
           alt=""
           style={{ position: "absolute", right: 0, bottom: 0 }}

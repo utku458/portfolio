@@ -76,7 +76,7 @@ const profileFacts = {
   // phone number.
   resumeUrl: "/documents/utku-altinay-cv.pdf",
   // The background-free cut-out; its intrinsic size reserves the box (CLS 0).
-  portrait: { src: "/images/utku-altinay.webp", width: 572, height: 1157 },
+  portrait: { src: "/images/utku-altinay-suit.webp", width: 729, height: 1692 },
 } as const;
 
 /**
