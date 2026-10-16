@@ -1,12 +1,14 @@
 import Image from "next/image";
 
+import { profileFacts } from "@/data";
+
 interface HeroPortraitProps {
   /** Describes the photograph to someone who cannot see it. */
   readonly alt: string;
 }
 
-/** Intrinsic size of the cut-out, so the browser reserves the box (CLS stays 0). */
-const PORTRAIT = { src: "/images/utku-altinay.webp", width: 572, height: 1157 } as const;
+/** Shared with the Person structured data, so both always name the same file. */
+const PORTRAIT = profileFacts.portrait;
 
 /**
  * The hero's second column: the subject, with no frame around him.

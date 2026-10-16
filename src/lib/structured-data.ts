@@ -24,9 +24,6 @@ const SCHEMA_CONTEXT = "https://schema.org" as const;
 export const PERSON_ID = `${siteConfig.url}/#person`;
 export const WEBSITE_ID = `${siteConfig.url}/#website`;
 
-/** The portrait identifies the entity; the OG card is a banner, not a face. */
-const PORTRAIT = { path: "/images/utku-altinay.jpg", width: 800, height: 1000 } as const;
-
 const ref = (id: string) => ({ "@id": id });
 
 const absolute = (path: string) => `${siteConfig.url}${path}`;
@@ -42,11 +39,12 @@ function personNode(locale: Locale, profile: Profile, skills: readonly Skill[]):
     jobTitle: profile.title,
     description: profile.headline,
     url: absolute(localePath(locale, "/")),
+    // The portrait identifies the entity; the OG card is a banner, not a face.
     image: {
       "@type": "ImageObject",
-      url: absolute(PORTRAIT.path),
-      width: PORTRAIT.width,
-      height: PORTRAIT.height,
+      url: absolute(profile.portrait.src),
+      width: profile.portrait.width,
+      height: profile.portrait.height,
     },
     email: `mailto:${profile.contact.email}`,
     // `workLocation`, not `address`: a `PostalAddress` on a Person invites a

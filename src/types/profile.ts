@@ -54,4 +54,17 @@ export interface Profile {
    * a one-line change rather than a hunt through the components.
    */
   readonly resumeUrl?: string;
+  /**
+   * The portrait, as a file and its intrinsic size. One record because two
+   * consumers need it — the hero renders it, the Person structured data cites
+   * it — and a path typed twice is a path that ends up pointing at a deleted file.
+   */
+  readonly portrait: PortraitAsset;
+}
+
+export interface PortraitAsset {
+  /** Path under `public/`. */
+  readonly src: string;
+  readonly width: number;
+  readonly height: number;
 }

@@ -75,6 +75,8 @@ const profileFacts = {
   // by someone reading the site rather than findable by someone querying for a
   // phone number.
   resumeUrl: "/documents/utku-altinay-cv.pdf",
+  // The background-free cut-out; its intrinsic size reserves the box (CLS 0).
+  portrait: { src: "/images/utku-altinay.webp", width: 572, height: 1157 },
 } as const;
 
 /**
@@ -116,6 +118,7 @@ export function getProfile(locale: Locale): Profile {
       ...copy.education[entry.id as EducationId],
     })),
     resumeUrl: profileFacts.resumeUrl,
+    portrait: profileFacts.portrait,
   };
 }
 
