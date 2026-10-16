@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
 import { ImageResponse } from "next/og";
 
 import { siteConfig } from "@/config/site";
@@ -22,6 +25,18 @@ export function generateStaticParams() {
 }
 
 /**
+ * Read from disk and inlined, not fetched over HTTP: this renders during
+ * `next build`, when nothing is serving the site yet, so a URL would resolve
+ * to nothing. The left and lower edges of the file are already transparent —
+ * Satori supports neither `mask-image` nor a gradient over an `<img>`, so the
+ * blend into the card is baked into the asset's alpha channel.
+ */
+async function portraitDataUri(): Promise<string> {
+  const file = await readFile(join(process.cwd(), "public/images/utku-altinay-og.png"));
+  return `data:image/png;base64,${file.toString("base64")}`;
+}
+
+/**
  * `params`, not `next/root-params`: an OG image is a Route Handler, and root
  * params are not available there. The segment is read directly instead.
  */
@@ -32,6 +47,7 @@ export default async function OpengraphImage({
 }) {
   const { lang } = await params;
   const profile = getProfile(isLocale(lang) ? lang : defaultLocale);
+  const portrait = await portraitDataUri();
 
   return new ImageResponse(
     (
@@ -47,9 +63,22 @@ export default async function OpengraphImage({
           backgroundImage:
             "radial-gradient(900px circle at 12% 0%, rgba(113,172,255,0.18), transparent 60%)",
           color: "#f2f4f6",
+          position: "relative",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        {/*
+          Absolute and bleeding off the lower edge, so the card reads as a
+          portrait someone is standing in rather than a photo pasted into a box.
+        */}
+        <img
+          src={portrait}
+          width={524}
+          height={560}
+          alt=""
+          style={{ position: "absolute", right: 0, bottom: 0 }}
+        />
+
+        <div style={{ display: "flex", flexDirection: "column", maxWidth: 680 }}>
           <div
             style={{
               display: "flex",
@@ -77,7 +106,7 @@ export default async function OpengraphImage({
             style={{
               display: "flex",
               marginTop: 28,
-              maxWidth: 900,
+              maxWidth: 640,
               fontSize: 34,
               lineHeight: 1.35,
               color: "#9aa2ad",

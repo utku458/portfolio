@@ -32,6 +32,12 @@ const PORTRAIT = profileFacts.portrait;
  * third to nothing lets him dissolve into the page instead, which is also why
  * the figure can sit low in the hero without needing a floor to stand on.
  *
+ * He is also held back a little rather than sitting at full strength: slightly
+ * transparent, so the hero's grid reads faintly through him, and in the light
+ * theme blended on luminosity so the photograph's own warm cast gives way to
+ * the page's palette instead of fighting it. The dark theme skips that — there
+ * the page is already the night he was photographed in.
+ *
  * `priority` because on a wide screen this is beside the <h1>, which is the LCP
  * element — the optimizer should not defer what a visitor sees first.
  */
@@ -43,6 +49,23 @@ export function HeroPortrait({ alt }: HeroPortraitProps) {
         className="absolute left-1/2 top-[44%] -z-10 aspect-square w-[165%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,var(--portrait-pool),transparent_72%)]"
       />
 
+      {/*
+        Two rings he stands inside. Without something behind it a cut-out reads
+        as pasted on, because nothing in the composition acknowledges it — the
+        figure needs a place, not just an absence of background. They are
+        concentric and off-centre from the pool so the geometry does not look
+        like a target, and the lower half of each is faded out by the mask
+        below so they never cross the baseline the figure dissolves into.
+      */}
+      <div
+        aria-hidden
+        className="absolute left-1/2 top-[42%] -z-10 aspect-square w-[128%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20 [mask-image:linear-gradient(to_bottom,black_35%,transparent_85%)]"
+      />
+      <div
+        aria-hidden
+        className="absolute left-1/2 top-[42%] -z-10 aspect-square w-[178%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10 [mask-image:linear-gradient(to_bottom,black_30%,transparent_80%)]"
+      />
+
       <Image
         src={PORTRAIT.src}
         alt={alt}
@@ -50,7 +73,7 @@ export function HeroPortrait({ alt }: HeroPortraitProps) {
         height={PORTRAIT.height}
         priority
         sizes="(min-width: 1024px) 24rem, (min-width: 640px) 18rem, 15rem"
-        className="relative h-auto w-full select-none [mask-image:linear-gradient(to_bottom,black_58%,transparent_96%)]"
+        className="relative h-auto w-full select-none opacity-90 mix-blend-luminosity [mask-image:linear-gradient(to_bottom,black_58%,transparent_96%)] dark:opacity-95 dark:mix-blend-normal"
       />
     </div>
   );
