@@ -30,29 +30,34 @@ export async function ProjectCardFace({
     <div
       className={
         project.cover
-          ? "lg:grid lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-9"
+          ? "min-[480px]:grid min-[480px]:grid-cols-[12rem_minmax(0,1fr)] min-[480px]:gap-6 md:grid-cols-[16rem_minmax(0,1fr)] md:gap-7 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-9"
           : undefined
       }
     >
       {project.cover && (
         /*
-          Full-bleed on a phone, where the card is around 340px wide and these
-          screenshots have pixels to spare. From `lg` it becomes a fixed 20rem
-          column rather than spanning the whole 60rem card.
+          Full-bleed only on a phone, where the card is under ~430px and these
+          screenshots still have pixels to spare. Above that it becomes a fixed
+          column — 12rem, then 16rem, then 20rem — instead of spanning the card.
 
-          That width is arithmetic, not taste. Most of these covers are
+          Those widths are arithmetic, not taste. Most of these covers are
           montages assembled from screenshots that no longer exist, or they sit
-          behind a login, so 800px is all the source there will ever be. A 20rem
-          box asks for 640px on a retina display, which 800px covers outright.
-          Spanning the card asked for 1920 and got two-and-a-half times upscale,
-          which is exactly what "fine on a phone, mushy on a laptop" looks like.
+          behind a login, so 800px is all the source there will ever be. The
+          widest of them, 20rem, asks for 640px on a retina display, which 800px
+          covers outright. Spanning the card asked for 1920 and got two-and-a-
+          half times upscale: "fine on a phone, mushy on a laptop".
+
+          The steps matter as much as the final width. One breakpoint at `lg`
+          would leave every tablet and part-width laptop window — 640px to
+          1023px, where the card is still 840px wide — exactly as upscaled as
+          before, which is the half-fix that looks done and is not.
         */
-        <div className="-mx-6 -mt-6 mb-7 overflow-hidden border-b border-border sm:-mx-8 sm:-mt-8 lg:m-0 lg:self-start lg:rounded-xl lg:border">
+        <div className="-mx-6 -mt-6 mb-7 overflow-hidden border-b border-border min-[480px]:m-0 min-[480px]:self-start min-[480px]:rounded-xl min-[480px]:border">
           <div className="aspect-16/10 transition-transform duration-500 ease-(--ease-out-expo) group-hover:scale-[1.02]">
             <ProjectCover
               cover={project.cover}
               priority={coverPriority}
-              sizes="(min-width: 1024px) 20rem, 100vw"
+              sizes="(min-width: 1024px) 20rem, (min-width: 768px) 16rem, (min-width: 480px) 12rem, 100vw"
             />
           </div>
         </div>
@@ -93,7 +98,14 @@ export async function ProjectCardFace({
 
         {/* Problem before solution. Reversing the two is how a portfolio ends up
           describing features nobody asked about. */}
-        <dl className="mt-7 grid gap-6 sm:grid-cols-2">
+        {/*
+          Two columns only from `lg`. The cover now takes a column of its own
+          from 480px up, so between there and `lg` this pair would be splitting
+          an already-narrow remainder — measured at 165px each, which wraps
+          body copy to three words a line. `sm` was the right breakpoint when
+          the text had the whole card to itself; it is not any more.
+        */}
+        <dl className="mt-7 grid gap-6 lg:grid-cols-2">
           <div>
             <dt className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
               {dict.projects.theProblem}

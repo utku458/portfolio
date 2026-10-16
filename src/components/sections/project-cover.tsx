@@ -8,8 +8,15 @@ interface ProjectCoverProps {
   /** The first card is above the fold; everything else can wait. */
   readonly priority?: boolean;
   readonly className?: string;
-  /** Tells the optimizer which widths to generate — see `sizes` in next/image. */
-  readonly sizes?: string;
+  /**
+   * Required, with no default on purpose. Only the caller knows how wide the
+   * box is, and a default here is a guess that outlives the layout it was
+   * written for: the last one still claimed 60rem long after these covers had
+   * stopped being drawn that wide, which is the bug this component sat at the
+   * centre of. `sizes` decides which widths the optimizer generates, so
+   * getting it wrong costs real pixels — the type asks rather than assumes.
+   */
+  readonly sizes: string;
 }
 
 /**
@@ -21,7 +28,7 @@ export function ProjectCover({
   cover,
   priority = false,
   className,
-  sizes = "(min-width: 1024px) 60rem, 100vw",
+  sizes,
 }: ProjectCoverProps) {
   return (
     <Image
